@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux'; 
+import { useNavigate } from 'react-router-dom';
 import { setNotification } from '../actions/notificationActions';
 import '../styles/Books.css';
 
 const Books = ({ searchQuery }) => {
   const [books, setBooks] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //tilapäinen kirjojen data hakutoiminto
   useEffect(() => {
@@ -28,17 +30,22 @@ const Books = ({ searchQuery }) => {
     book.luokka.toLowerCase().includes(normalizedQuery)
   );
 
+  const handleAddToOrder = (book) => {
+    dispatch(setNotification({ message: `"${book.nimi}" added to your order`, requestStatus: 'success' }));
+  };
+
   return (
     <div className="book-container">
       <h1>Book Store</h1>
       <div className="books-grid">
         {filteredBooks.length > 0 ? (
           filteredBooks.map(book => (
-            <div key={book.id} className="book-card">
+            <div key={book.id} className="book-card" onClick={() => navigate(`/books/${book.id}`)}>
               <h2>{book.nimi}</h2>
               <p><strong>Tekijä:</strong> {book.tekijä}</p>
-              <p><strong>Tyyppi:</strong> {book.tyyppi}</p>
-              <p><strong>Luokka:</strong> {book.luokka}</p>
+              <button onClick={(e) => { e.stopPropagation(); handleAddToOrder(book); }}>
+                Add to Order
+              </button>
             </div>
           ))
         ) : (

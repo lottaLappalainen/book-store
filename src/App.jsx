@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Notification from './components/Notification';
 import Books from './components/Books';
+import SingleBookView from './components/SingleBookView';
 import Order from './components/Order';
-import AddBook from './components/AddBook';
+import AddBookForm from './components/AddBookForm';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -31,8 +32,9 @@ function App() {
           <>
             <Route path="/" element={<Navigate to="/books" />} />
             <Route path="/books" element={<Books searchQuery={searchQuery} />} />
+            <Route path="/books/:id" element={<SingleBookView />} />
             <Route path="/order" element={<Order />} />
-            <Route path="/addbook" element={<AddBook />} />
+            <Route path="/addbook" element={<AddBookForm />} />
           </>
         )}
       </Routes>
