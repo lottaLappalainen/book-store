@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux'; 
 import { useNavigate } from 'react-router-dom';
 import { setNotification } from '../actions/notificationActions';
+import { addToOrder } from '../actions/orderActions';
 import '../styles/Books.css';
 
 const Books = ({ searchQuery }) => {
@@ -31,6 +32,7 @@ const Books = ({ searchQuery }) => {
   );
 
   const handleAddToOrder = (book) => {
+    dispatch(addToOrder(book));
     dispatch(setNotification({ message: `"${book.nimi}" added to your order`, requestStatus: 'success' }));
   };
 

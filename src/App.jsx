@@ -11,6 +11,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 
 function App() {
+  //pitää muuttaa tää että otetaan rooli kirjautuneen käyttäjän tiedoista
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const notification = useSelector(state => state.notification);
