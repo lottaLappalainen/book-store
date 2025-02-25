@@ -1,24 +1,37 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import Books from './components/Books';
+import Order from './components/Order';
+import AddBook from './components/AddBook';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import Register from './components/Register';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      {isAuthenticated && <Navbar role="customer" />} {/*hardcoded role, change to admin to see add book*/}
+
+      <Routes>
+        {!isAuthenticated ? (
+          <>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+            <Route path="/register" element={<Register />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<Navigate to="/books" />} />
+            <Route path="/books" element={<Books />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/addbook" element={<AddBook />} />
+          </>
+        )}
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
