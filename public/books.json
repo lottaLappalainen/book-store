@@ -1,0 +1,163 @@
+[
+    {
+      "id": 1,
+      "isbn": "978-3-16-148410-0",
+      "nimi": "Seikkailujen Maa",
+      "tekijä": "Matti Meikäläinen",
+      "tyyppi": "romaani",
+      "luokka": "seikkailu"
+    },
+    {
+      "id": 2,
+      "isbn": "978-951-98548-9-2",
+      "nimi": "Rakkauden Aallot",
+      "tekijä": "Anna Rakkaus",
+      "tyyppi": "romaani",
+      "luokka": "romantiikka"
+    },
+    {
+      "id": 3,
+      "isbn": "978-0-262-13472-9",
+      "nimi": "Sarjakuvan Sankarit",
+      "tekijä": "Kuvittaja Kalle",
+      "tyyppi": "sarjakuva",
+      "luokka": "sikailu"
+    },
+    {
+      "id": 4,
+      "isbn": "978-1-56619-909-4",
+      "nimi": "Kuvitettu Elämä",
+      "tekijä": "Piirtäjä Pirkko",
+      "tyyppi": "kuvakirja",
+      "luokka": "seikkailu"
+    },
+    {
+      "id": 5,
+      "isbn": "978-0-395-19395-8",
+      "nimi": "Rakkauden Runot",
+      "tekijä": "Runoilija Reijo",
+      "tyyppi": "romaani",
+      "luokka": "romantiikka"
+    },
+    {
+      "id": 6,
+      "isbn": "978-0-7432-7356-5",
+      "nimi": "Yön Varjot",
+      "tekijä": "Jännitys-Jari",
+      "tyyppi": "romaani",
+      "luokka": "seikkailu"
+    },
+    {
+      "id": 7,
+      "isbn": "978-0-553-57340-4",
+      "nimi": "Tähtien Tarinat",
+      "tekijä": "Tieteis-Tuomas",
+      "tyyppi": "romaani",
+      "luokka": "sci-fi"
+    },
+    {
+      "id": 8,
+      "isbn": "978-0-06-112008-4",
+      "nimi": "Kuvien Kieli",
+      "tekijä": "Graafikko Greta",
+      "tyyppi": "kuvakirja",
+      "luokka": "opiskelu"
+    },
+    {
+      "id": 9,
+      "isbn": "978-0-14-017739-8",
+      "nimi": "Salaperäinen Saari",
+      "tekijä": "Matkailija Mauno",
+      "tyyppi": "romaani",
+      "luokka": "seikkailu"
+    },
+    {
+      "id": 10,
+      "isbn": "978-1-4028-9462-6",
+      "nimi": "Rikoksen Polut",
+      "tekijä": "Dekkaristi Daniela",
+      "tyyppi": "romaani",
+      "luokka": "rikos"
+    },
+    {
+      "id": 11,
+      "isbn": "978-0-385-52816-1",
+      "nimi": "Huumorin Helmiä",
+      "tekijä": "Naura-Niina",
+      "tyyppi": "sarjakuva",
+      "luokka": "huumori"
+    },
+    {
+      "id": 12,
+      "isbn": "978-1-250-08060-1",
+      "nimi": "Muinaiset Myytit",
+      "tekijä": "Historioitsija Harri",
+      "tyyppi": "romaani",
+      "luokka": "historia"
+    },
+    {
+      "id": 13,
+      "isbn": "978-1-4516-7321-7",
+      "nimi": "Opas Onnellisuuteen",
+      "tekijä": "Elämänviisas Elli",
+      "tyyppi": "kuvakirja",
+      "luokka": "hyvinvointi"
+    },
+    {
+      "id": 14,
+      "isbn": "978-0-307-40677-1",
+      "nimi": "Mestarikokin Reseptit",
+      "tekijä": "Kokki Kari",
+      "tyyppi": "kuvakirja",
+      "luokka": "ruoka"
+    },
+    {
+      "id": 15,
+      "isbn": "978-0-316-76948-8",
+      "nimi": "Satujen Maailma",
+      "tekijä": "Satutäti Sanna",
+      "tyyppi": "kuvakirja",
+      "luokka": "lapset"
+    },
+    {
+      "id": 16,
+      "isbn": "978-0-517-88935-5",
+      "nimi": "Salapoliisin Päiväkirja",
+      "tekijä": "Etsivä Erkki",
+      "tyyppi": "romaani",
+      "luokka": "rikos"
+    },
+    {
+      "id": 17,
+      "isbn": "978-1-60961-382-5",
+      "nimi": "Teknologian Tulevaisuus",
+      "tekijä": "Professori Pentti",
+      "tyyppi": "romaani",
+      "luokka": "sci-fi"
+    },
+    {
+      "id": 18,
+      "isbn": "978-0-688-17467-3",
+      "nimi": "Lapsuuden Muistot",
+      "tekijä": "Muistelija Martti",
+      "tyyppi": "kuvakirja",
+      "luokka": "elämäkerta"
+    },
+    {
+      "id": 19,
+      "isbn": "978-0-7432-7356-8",
+      "nimi": "Maailman Uutiset",
+      "tekijä": "Toimittaja Toni",
+      "tyyppi": "kuvakirja",
+      "luokka": "ajankohtaista"
+    },
+    {
+      "id": 20,
+      "isbn": "978-0-06-440002-6",
+      "nimi": "Legendan Paluu",
+      "tekijä": "Fantasia-Felix",
+      "tyyppi": "romaani",
+      "luokka": "fantasia"
+    }
+  ]
+  

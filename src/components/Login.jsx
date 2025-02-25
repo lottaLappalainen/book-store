@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setNotification } from '../actions/notificationActions';
 
 function Login({ setIsAuthenticated }) {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();

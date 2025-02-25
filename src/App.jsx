@@ -1,6 +1,6 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Notification from './components/Notification';
 import Books from './components/Books';
 import Order from './components/Order';
@@ -11,17 +11,15 @@ import Register from './components/Register';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const notification = useSelector(state => state.notification);
 
   return (
     <div>
-      {isAuthenticated && <Navbar role="customer" />} {/*hardcoded role, change to admin to see add book*/}
-      <div>
-        {notification && (
-          <Notification/>
-        )}
-      </div>
-
+      {isAuthenticated && <Navbar role="customer" onSearch={setSearchQuery} />}
+      
+      {notification && <Notification />}
+      
       <Routes>
         {!isAuthenticated ? (
           <>
@@ -32,7 +30,7 @@ function App() {
         ) : (
           <>
             <Route path="/" element={<Navigate to="/books" />} />
-            <Route path="/books" element={<Books />} />
+            <Route path="/books" element={<Books searchQuery={searchQuery} />} />
             <Route path="/order" element={<Order />} />
             <Route path="/addbook" element={<AddBook />} />
           </>
