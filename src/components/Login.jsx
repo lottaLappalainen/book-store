@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'; 
 import { setNotification } from '../actions/notificationActions';
+import { login } from '../actions/userActions';
 
-function Login({ setIsAuthenticated }) {
+function Login() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,13 +13,13 @@ function Login({ setIsAuthenticated }) {
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(setNotification({ message: 'Logging in...', requestStatus: 'loading' }));
-    //filler login logic
+    //testaa kirjautumista näillä crediteillä
     if (email === "test@example.com" && password === "password") {
-      setIsAuthenticated(true);
+      dispatch(login());
       dispatch(setNotification({ message: 'Login successful', requestStatus: 'success' }));
-      navigate("/books"); 
+      navigate("/books");
     } else {
-      dispatch(setNotification({ message: 'An error occurred while logging in. Please try again later.', requestStatus: 'error' }));
+      dispatch(setNotification({ message: 'Invalid credentials', requestStatus: 'error' }));
     }
   };
 

@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { logout } from '../actions/userActions';
 
 function Navbar({ role, onSearch }) {
   const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
 
   const handleSearch = (event) => {
     setQuery(event.target.value);
@@ -16,6 +19,7 @@ function Navbar({ role, onSearch }) {
         {role === "customer" && <li><Link to="/order">Order</Link></li>}
         {role === "admin" && <li><Link to="/addbook">Add a Book</Link></li>}
       </ul>
+      <button onClick={() => dispatch(logout())}>Logout</button>
 
       <input
         type="text"

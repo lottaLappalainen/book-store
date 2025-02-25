@@ -21,7 +21,7 @@ const Books = ({ searchQuery }) => {
       .catch(error => dispatch(setNotification({ message: error.message, requestStatus: 'error' })));
   }, []);
 
-  const normalizedQuery = searchQuery.toLowerCase();
+  const normalizedQuery = searchQuery;
 
   //kirjat filtteröidään haun perusteella, joka voi kohdistua nimeen tekijään tyyppiin tai luokkaan
   const filteredBooks = books.filter(book =>

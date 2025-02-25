@@ -11,23 +11,21 @@ import Login from './components/Login';
 import Register from './components/Register';
 
 function App() {
-  //pitää muuttaa tää että otetaan rooli kirjautuneen käyttäjän tiedoista
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const notification = useSelector(state => state.notification);
+  const role = useSelector(state => state.user.role);
 
   return (
     <div>
-      {isAuthenticated && <Navbar role="customer" onSearch={setSearchQuery} />}
-      
+      {role !== 'guest' &&  <Navbar role={role} onSearch={setSearchQuery} />}
       {notification && <Notification />}
       
       <Routes>
-        {!isAuthenticated ? (
+        {role === 'guest' ? (
           <>
-            <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+            <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register />} />
+            <Route path="*" element={<Navigate to="/login" />} />
           </>
         ) : (
           <>
@@ -36,6 +34,7 @@ function App() {
             <Route path="/books/:id" element={<SingleBookView />} />
             <Route path="/order" element={<Order />} />
             <Route path="/addbook" element={<AddBookForm />} />
+            <Route path="*" element={<Navigate to="/books" />} />
           </>
         )}
       </Routes>
