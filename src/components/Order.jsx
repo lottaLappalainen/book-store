@@ -11,18 +11,18 @@ const Order = () => {
   };
 
   const handleOrder = () => {
-    dispatch(setNotification({ message: 'Order placed successfully!', requestStatus: 'success' }));
+    dispatch(setNotification({ message: 'Tilaus suoritettu onnistuneesti', requestStatus: 'success' }));
     dispatch(clearOrder());
   };
 
   const handleCancelOrder = () => {
-    dispatch(setNotification({ message: 'Order canceled.', requestStatus: 'error' }));
+    dispatch(setNotification({ message: 'Tilaus peruttu.', requestStatus: 'error' }));
     dispatch(clearOrder());
   };
 
   return (
     <div className="order-container">
-      <h1>Your Order</h1>
+      <h1>Ostoskori</h1>
       {order.length > 0 ? (
         <>
           <ul>
@@ -40,7 +40,7 @@ const Order = () => {
           <button onClick={handleCancelOrder}>Cancel Order</button>
         </>
       ) : (
-        <p>Your order is empty.</p>
+        <p>Ostoskori on tyhjä.</p>
       )}
     </div>
   );

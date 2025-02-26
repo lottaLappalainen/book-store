@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'; 
+import { setNotification } from '../actions/notificationActions';
 
 function Register() {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -18,22 +21,22 @@ function Register() {
   const handleRegister = (e) => {
     e.preventDefault();
     console.log("User Registered:", formData);
-    alert("Registration Successful! Please login.");
+    dispatch(setNotification({ message: 'Rekisteröinti onnistui, siirry kirjautumiseen', requestStatus: 'success' }));
     navigate("/login");
   };
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Luo tili</h2>
       <form onSubmit={handleRegister}>
-        <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
-        <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
-        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-        <input type="text" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} required />
-        <button type="submit">Register</button>
+        <input type="text" name="name" placeholder="Nimi" value={formData.name} onChange={handleChange} required />
+        <input type="text" name="address" placeholder="Osoite" value={formData.address} onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Sähköposti" value={formData.email} onChange={handleChange} required />
+        <input type="password" name="password" placeholder="Salasana" value={formData.password} onChange={handleChange} required />
+        <input type="text" name="phone" placeholder="Puhelin" value={formData.phone} onChange={handleChange} required />
+        <button type="submit">Luo tili</button>
       </form>
-      <p>Already have an account? <a href="/login">Login here</a></p>
+      <p>Onko sinulla jo tili? <a href="/login">Kirjaudu sisään tästä</a></p>
     </div>
   );
 }

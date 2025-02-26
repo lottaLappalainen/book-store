@@ -16,10 +16,10 @@ const SingleBookView = () => {
 
   const handleAddToOrder = () => {
     dispatch(addToOrder(book));
-    dispatch(setNotification({ message: `"${book.nimi}" added to your order`, requestStatus: 'success' }));
+    dispatch(setNotification({ message: `"${book.nimi}" lisättiin tilaukseen`, requestStatus: 'success' }));
   };
 
-  if (!book) return <p>Loading book details...</p>;
+  if (!book) return <p>Kirjan tietoja ladataan...</p>;
 
   return (
     <div className="single-book-container">
@@ -28,7 +28,7 @@ const SingleBookView = () => {
       <p><strong>Isbn:</strong> {book.isbn}</p>
       <p><strong>Tyyppi:</strong> {book.tyyppi}</p>
       <p><strong>Luokka:</strong> {book.luokka}</p>
-      <button onClick={handleAddToOrder}>Add to Order</button>
+      <button onClick={handleAddToOrder}>Lisää ostoskoriin</button>
     </div>
   );
 };

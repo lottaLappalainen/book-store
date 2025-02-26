@@ -12,26 +12,26 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(setNotification({ message: 'Logging in...', requestStatus: 'loading' }));
+    dispatch(setNotification({ message: 'Kirjaudutaan sisään...', requestStatus: 'loading' }));
     //testaa kirjautumista näillä crediteillä
     if (email === "test@example.com" && password === "password") {
       dispatch(login());
-      dispatch(setNotification({ message: 'Login successful', requestStatus: 'success' }));
+      dispatch(setNotification({ message: 'Kirjautuminen onnistui', requestStatus: 'success' }));
       navigate("/books");
     } else {
-      dispatch(setNotification({ message: 'Invalid credentials', requestStatus: 'error' }));
+      dispatch(setNotification({ message: 'Väärä sähköposti tai salasana', requestStatus: 'error' }));
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Kirjautuminen</h2>
       <form onSubmit={handleLogin}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">Login</button>
+        <input type="email" placeholder="Sähköposti" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input type="password" placeholder="Salasana" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <button type="submit">Kirjaudu sisään</button>
       </form>
-      <p>New user? <a href="/register">Click here to register</a></p>
+      <p>Uusi käyttäjä? <a href="/register">Luo tili</a></p>
     </div>
   );
 }

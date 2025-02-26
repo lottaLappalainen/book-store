@@ -15,15 +15,15 @@ function Navbar({ role, onSearch }) {
   return (
     <nav className="navbar">
       <ul className="nav-links">
-        <li><Link to="/books">Books</Link></li>
-        {role === "customer" && <li><Link to="/order">Order</Link></li>}
-        {role === "admin" && <li><Link to="/addbook">Add a Book</Link></li>}
+        <li><Link to="/books">Kirjat</Link></li>
+        {role === "customer" && <li><Link to="/order">Ostoskori</Link></li>}
+        {role === "admin" && <li><Link to="/addbook">Lisää kirja</Link></li>}
       </ul>
-      <button onClick={() => dispatch(logout())}>Logout</button>
+      <button onClick={() => dispatch(logout())}>Kirjaudu ulos</button>
 
       <input
         type="text"
-        placeholder="Search books..."
+        placeholder="Hae kirjoja..."
         value={query}
         onChange={handleSearch}
         className="search-input"

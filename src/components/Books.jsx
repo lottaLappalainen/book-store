@@ -13,7 +13,7 @@ const Books = ({ searchQuery }) => {
 
   useEffect(() => {
     dispatch(fetchBooks());
-    dispatch(setNotification({ message: 'Fetching books was successful', requestStatus: 'success' }));
+    dispatch(setNotification({ message: 'Kirjat haettu onnistuneesti', requestStatus: 'success' }));
   }, [dispatch]);
 
   const normalizeText = (text) => text.toLowerCase().trim();
@@ -51,12 +51,12 @@ const Books = ({ searchQuery }) => {
 
   const handleAddToOrder = (book) => {
     dispatch(addToOrder(book));
-    dispatch(setNotification({ message: `"${book.nimi}" added to your order`, requestStatus: 'success' }));
+    dispatch(setNotification({ message: `"${book.nimi}" lisättiin ostoskoriin`, requestStatus: 'success' }));
   };
 
   return (
     <div className="book-container">
-      <h1>Book Store</h1>
+      <h1>Kirjat</h1>
       <div className="books-grid">
         {sortedBooks.length > 0 ? (
           sortedBooks.map(book => (
@@ -64,12 +64,12 @@ const Books = ({ searchQuery }) => {
               <h2>{book.nimi}</h2>
               <p><strong>Tekijä:</strong> {book.tekijä}</p>
               <button onClick={(e) => { e.stopPropagation(); handleAddToOrder(book); }}>
-                Add to Order
+                Lisää ostoskoriin
               </button>
             </div>
           ))
         ) : (
-          <p>No books found.</p>
+          <p>Kirjoja ei löytynyt.</p>
         )}
       </div>
     </div>
