@@ -34,6 +34,8 @@ const Order = () => {
               </li>
             ))}
           </ul>
+          <h4>Postikulut: </h4>
+          <h4>Kokonaishinta: </h4>
           <button onClick={handleOrder}>Place Order</button>
           <button onClick={handleCancelOrder}>Cancel Order</button>
         </>

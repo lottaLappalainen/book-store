@@ -33,6 +33,9 @@ const SingleBookView = () => {
         <strong>Tekijä:</strong> {book.tekijä}
       </p>
       <p>
+        <strong>Isbn:</strong> {book.isbn}
+      </p>
+      <p>
         <strong>Tyyppi:</strong> {book.tyyppi}
       </p>
       <p>
