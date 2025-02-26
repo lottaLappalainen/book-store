@@ -1,23 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../actions/notificationActions';
 import { addToOrder } from '../actions/orderActions';
+import { fetchBookById } from '../actions/booksActions';
 
 const SingleBookView = () => {
   const { id } = useParams();
-  const [book, setBook] = useState(null);
   const dispatch = useDispatch();
+  const book = useSelector((state) => state.books.selectedBook);
 
   useEffect(() => {
-    fetch('/books.json')
-      .then((response) => response.json())
-      .then((data) => {
-        const foundBook = data.find((book) => book.id === Number(id));
-        setBook(foundBook);
-      })
-      .catch((error) => dispatch(setNotification({ message: error.message, requestStatus: 'error' })));
-  }, [id]);
+    dispatch(fetchBookById(id));
+  }, [dispatch, id]);
 
   const handleAddToOrder = () => {
     dispatch(addToOrder(book));
@@ -29,18 +24,10 @@ const SingleBookView = () => {
   return (
     <div className="single-book-container">
       <h1>{book.nimi}</h1>
-      <p>
-        <strong>Tekijä:</strong> {book.tekijä}
-      </p>
-      <p>
-        <strong>Isbn:</strong> {book.isbn}
-      </p>
-      <p>
-        <strong>Tyyppi:</strong> {book.tyyppi}
-      </p>
-      <p>
-        <strong>Luokka:</strong> {book.luokka}
-      </p>
+      <p><strong>Tekijä:</strong> {book.tekijä}</p>
+      <p><strong>Isbn:</strong> {book.isbn}</p>
+      <p><strong>Tyyppi:</strong> {book.tyyppi}</p>
+      <p><strong>Luokka:</strong> {book.luokka}</p>
       <button onClick={handleAddToOrder}>Add to Order</button>
     </div>
   );

@@ -1,30 +1,26 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'; 
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setNotification } from '../actions/notificationActions';
 import { addToOrder } from '../actions/orderActions';
+import { fetchBooks } from '../actions/booksActions';
 import '../styles/Books.css';
 
 const Books = ({ searchQuery }) => {
-  const [books, setBooks] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const books = useSelector((state) => state.books.books);
 
   useEffect(() => {
-    fetch('/books.json') 
-      .then(response => response.json())
-      .then(data => {
-        setBooks(data);
-        dispatch(setNotification({ message: 'Fetching books was successful', requestStatus: 'success' }));
-      })
-      .catch(error => dispatch(setNotification({ message: error.message, requestStatus: 'error' })));
-  }, []);
+    dispatch(fetchBooks());
+    dispatch(setNotification({ message: 'Fetching books was successful', requestStatus: 'success' }));
+  }, [dispatch]);
 
   const normalizeText = (text) => text.toLowerCase().trim();
 
   //tehtävänannossa kohta r4
   const rankByRelevance = (books, query) => {
-    const trimmedQuery = query.trim(); 
+    const trimmedQuery = query.trim();
     return books
       .map((book) => {
         const titleWords = normalizeText(book.nimi).split(/\s+/);
