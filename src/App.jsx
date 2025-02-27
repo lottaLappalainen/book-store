@@ -9,6 +9,7 @@ import AddBookForm from './components/AddBookForm';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
+import Search from './components/Search';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +33,7 @@ function App() {
             <Route path="/" element={<Navigate to="/books" />} />
             <Route path="/books" element={<Books searchQuery={searchQuery} />} />
             <Route path="/books/:id" element={<SingleBookView />} />
+            <Route path="/search" element={<Search />} />
             <Route path="/order" element={<Order />} />
             <Route path="/addbook" element={<AddBookForm />} />
             <Route path="*" element={<Navigate to="/books" />} />
