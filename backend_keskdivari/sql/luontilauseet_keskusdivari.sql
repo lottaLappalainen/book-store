@@ -8,7 +8,7 @@ CREATE TABLE Divari (
     id SERIAL PRIMARY KEY,
     nimi VARCHAR(150) NOT NULL,
     osoite VARCHAR(150) NOT NULL,
-    omaTietokanta boolean
+    omaTietokanta boolean NOT NULL
 );
 
 CREATE TABLE Kayttaja (
@@ -17,7 +17,7 @@ CREATE TABLE Kayttaja (
     osoite VARCHAR(150) NOT NULL,
     sposti VARCHAR(150) UNIQUE NOT NULL,
     puh VARCHAR(50),
-    salasana VARCHAR(150) NOT NULL,
+    salasana VARCHAR(150) UNIQUE NOT NULL,
     rooli VARCHAR(10) NOT NULL CHECK (rooli IN ('yllapitaja', 'asiakas'))
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE TeosLuokka (
 
 CREATE TABLE Teos (
     id SERIAL PRIMARY KEY,
-    isbn VARCHAR(13) CHECK (char_length(isbn) IN (10,13)),
+    isbn VARCHAR(17) CHECK (char_length(isbn) IN (10,17)),
     nimi VARCHAR(150) NOT NULL,
     tekija VARCHAR(150) NOT NULL,
     hinta NUMERIC(10,2) NOT NULL,
