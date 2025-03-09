@@ -1,7 +1,7 @@
 import { invalidId, missingParams, invalidEmail, invalidRooli } from "../utils/validationMessages";
 import { validateEmail, validateRooli } from "../utils/validators";
 
-export const createKayttaja = (nimi, osoite, sposti, puh = null, salasana, rooli = 'asiakas') => {
+export const createKayttaja = (nimi, osoite, sposti, puh, salasana, rooli = 'asiakas') => {
     if (!nimi, !osoite, !sposti, !salasana) throw new Error(missingParams);
     if (!validateEmail(sposti)) throw new Error(invalidEmail);
     return {
@@ -26,12 +26,14 @@ export const getKayttaja = (id) => {
 
 export const getAllKayttajat = () => {
     return {
-        text: `SELECT * FROM Kayttaja;`,
+        text: `
+            SELECT * FROM Kayttaja;
+        `,
     };
 };
 
 //TODO: Lisää puh validointi tarvittaessa
-export const updateKayttaja = (id, nimi = null, osoite = null, sposti = null, puh, salasana = null, rooli = null) => {
+export const updateKayttaja = (id, nimi, osoite, sposti, puh, salasana, rooli) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     if (rooli && !validateRooli(rooli)) throw new Error(invalidRooli);
     return {
