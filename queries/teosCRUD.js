@@ -1,5 +1,5 @@
-import { invalidId, invalidISBN, invalidNumericValue, missingParams } from "../utils/validationMessages";
-import { validateISBN } from "../utils/validators";
+import { invalidId, invalidISBN, invalidNumericValue, missingParams } from "../../utils/validationMessages";
+import { validateISBN } from "../../utils/validators";
 
 export const createTeos = (isbn = null, nimi, tekija, hinta, paino, tyyppiId = null, luokkaId = null) => {
     if (isbn && !validateISBN(isbn) || !isbn || !nimi || !tekija || !hinta || isNaN(hinta) || !paino || isNaN(paino)) throw new Error(missingParams);
