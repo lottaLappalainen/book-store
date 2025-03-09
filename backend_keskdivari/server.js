@@ -1,7 +1,9 @@
 import express from 'express';
 import { pool } from './db';
 import cors from 'cors';
-import { createKayttaja } from './queries';
+
+
+
 import { 
     createTeos, 
     getTeosWithNideCount 
