@@ -1,7 +1,7 @@
 import { invalidId, invalidISBN, invalidNumericValue, missingParams } from "../../utils/validationMessages";
 import { validateISBN } from "../../utils/validators";
 
-export const createTeos = (isbn = null, nimi, tekija, hinta, paino, tyyppiId = null, luokkaId = null) => {
+export const createTeos = (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId) => {
     if (isbn && !validateISBN(isbn) || !isbn || !nimi || !tekija || !hinta || isNaN(hinta) || !paino || isNaN(paino)) throw new Error(missingParams);
     return {
         text: `
@@ -38,7 +38,7 @@ export const getAllTeoksetWithNideCount = () => {
     };
 };
 
-export const updateTeos = (id, isbn, nimi = null, tekija = null, hinta = null, paino = null, tyyppiId, luokkaId) => {
+export const updateTeos = (id, isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     if (isbn && !validateISBN(isbn)) throw new Error(invalidISBN);
     if ((paino && isNaN(paino)) || (hinta && isNaN(hinta))) throw new Error(invalidNumericValue);

@@ -1,6 +1,6 @@
 import { missingParams, invalidId } from '../../utils/validationMessages';
 
-export const createDivari = (nimi, osoite, omaTietokanta = false) => {
+export const createDivari = (nimi, osoite, omaTietokanta) => {
     if (!nimi || !osoite) throw new Error(missingParams);
     return {
         text: `
@@ -26,7 +26,7 @@ export const getAllDivarit = () => {
     return { text: `SELECT * FROM Divari`, };
 };
 
-export const updateDivari = (id, nimi = null, osoite = null, omaTietokanta = null) => {
+export const updateDivari = (id, nimi, osoite, omaTietokanta) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     return {
         text: `
