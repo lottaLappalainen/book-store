@@ -18,9 +18,37 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("User Registered:", formData);
+    try {
+      const response = await fetch('http://tie-tkannat.it.tuni.fi:8069/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nimi: formData.name,
+          osoite: formData.address,
+          sposti: formData.email,
+          salasana: formData.password,
+          puh: formData.phone,
+          rooli: 'asiakas'
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("User Registered:", result);
+        dispatch(setNotification({ message: 'Rekisteröinti onnistui, siirry kirjautumiseen', requestStatus: 'success' }));
+        navigate("/login");
+      } else {
+        const error = await response.json();
+        alert('Error: ' + error.message);
+      }
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+
     dispatch(setNotification({ message: 'Rekisteröinti onnistui, siirry kirjautumiseen', requestStatus: 'success' }));
     navigate("/login");
   };

@@ -10,16 +10,33 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(setNotification({ message: 'Kirjaudutaan sisään...', requestStatus: 'loading' }));
-    //testaa kirjautumista näillä crediteillä
-    if (email === "test@example.com" && password === "password") {
-      dispatch(login());
-      dispatch(setNotification({ message: 'Kirjautuminen onnistui', requestStatus: 'success' }));
-      navigate("/books");
-    } else {
-      dispatch(setNotification({ message: 'Väärä sähköposti tai salasana', requestStatus: 'error' }));
+
+    try {
+      const response = await fetch('http://tie-tkannat.it.tuni.fi:8069/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          sposti: email,
+          salasana: password
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        dispatch(login());
+        dispatch(setNotification({ message: 'Kirjautuminen onnistui', requestStatus: 'success' }));
+        navigate("/books");
+      } else {
+        dispatch(setNotification({ message: 'Väärä sähköposti tai salasana', requestStatus: 'error' }));
+      }
+
+    } catch (error) {
+      alert('Error: ' + error.message);
     }
   };
 

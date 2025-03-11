@@ -7,7 +7,7 @@ export const createKayttaja = (nimi, osoite, sposti, puh, salasana, rooli = 'asi
     if (!validateEmail(sposti)) throw new Error(invalidEmail);
     return {
         text: `
-            INSERT INTO Kayttaja (nimi, osoite, sposti, puh, salasana, rooli)
+            INSERT INTO keskusdivari.Kayttaja (nimi, osoite, sposti, puh, salasana, rooli)
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *;
         `,
@@ -19,16 +19,23 @@ export const getKayttaja = (id) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     return {
         text: `
-            SELECT * FROM Kayttaja WHERE id = $1;
+            SELECT * FROM keskusdivari.Kayttaja WHERE id = $1;
         `,
         values: [id],
+    };
+};
+
+export const getKayttajaByEmail = (sposti) => {
+    return {
+        text: 'SELECT * FROM keskusdivari.Kayttaja WHERE sposti = $1',
+        values: [sposti],
     };
 };
 
 export const getAllKayttajat = () => {
     return {
         text: `
-            SELECT * FROM Kayttaja;
+            SELECT * FROM keskusdivari.Kayttaja;
         `,
     };
 };
@@ -39,7 +46,7 @@ export const updateKayttaja = (id, nimi, osoite, sposti, puh, salasana, rooli) =
     if (rooli && !validateRooli(rooli)) throw new Error(invalidRooli);
     return {
         text: `
-            UPDATE Kayttaja
+            UPDATE keskusdivari.Kayttaja
             SET nimi = COALESCE($1, nimi),
                 osoite = COALESCE($2, osoite),
                 sposti = COALESCE($3, sposti),
@@ -57,7 +64,7 @@ export const deleteKayttaja = (id) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     return {
         text: `
-            DELETE FROM Kayttaja
+            DELETE FROM keskusdivari.Kayttaja
             WHERE id = $1
             RETURNING *;
         `,
