@@ -25,7 +25,7 @@ pool.on('error', (err) => {
 });
 
 const backend = express();
-const port = process.env.SERVER_PORT || 3000;
+const port = process.env.SERVER_PORT || 3000; // 8069?
 
 backend.use(express.json());
 backend.use(cors()); // Enable CORS for all routes
@@ -38,6 +38,10 @@ backend.get('/', (req, res) => {
 // Import and use routes
 import { setupUserRoutes } from './db/routes/userRoutes.js';
 setupUserRoutes(backend);
+
+backend.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
 
 backend.listen(port, () => {
     console.log(`Server running on port ${port}`);
