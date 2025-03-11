@@ -1,17 +1,21 @@
-CREATE TABLE KeskusdivariInfo (
+-- Create schema
+CREATE SCHEMA IF NOT EXISTS keskusdivari;
+
+-- Create tables in the keskusdivari schema
+CREATE TABLE keskusdivari.KeskusdivariInfo (
     nimi VARCHAR(150) NOT NULL,
     osoite VARCHAR(150) NOT NULL,
     nettisivut VARCHAR(150) NOT NULL
 );
 
-CREATE TABLE Divari (
+CREATE TABLE keskusdivari.Divari (
     id SERIAL PRIMARY KEY,
     nimi VARCHAR(150) NOT NULL,
     osoite VARCHAR(150) NOT NULL,
-    omaTietokanta boolean NOT NULL
+    omaTietokanta BOOLEAN NOT NULL
 );
 
-CREATE TABLE Kayttaja (
+CREATE TABLE keskusdivari.Kayttaja (
     id SERIAL PRIMARY KEY,
     nimi VARCHAR(150) NOT NULL,
     osoite VARCHAR(150) NOT NULL,
@@ -21,52 +25,51 @@ CREATE TABLE Kayttaja (
     rooli VARCHAR(10) NOT NULL CHECK (rooli IN ('yllapitaja', 'asiakas'))
 );
 
-
-CREATE TABLE Tilaus (
+CREATE TABLE keskusdivari.Tilaus (
     id SERIAL PRIMARY KEY,
     tilauspvm DATE NOT NULL,
     hinta NUMERIC(10,2) NOT NULL,
-    tila VARCHAR(13) NOT NULL CHECK (tila IN ('vahvistamaton', 'maksettu', 'lahetetty')),
+    tila VARCHAR(13) NOT NULL CHECK (tila IN ('vahvistamaton', 'maksettu', 'lahetetty'))
 );
 
-CREATE TABLE Lahetys (
+CREATE TABLE keskusdivari.Lahetys (
     id SERIAL PRIMARY KEY,
     postikulut NUMERIC(10,2) NOT NULL,
-    tilausId INT NOT NULL REFERENCES Tilaus(id) ON DELETE CASCADE
+    tilausId INT NOT NULL REFERENCES keskusdivari.Tilaus(id) ON DELETE CASCADE
 );
 
-CREATE TABLE TeosTyyppi (
+CREATE TABLE keskusdivari.TeosTyyppi (
     id SERIAL PRIMARY KEY,
     nimi VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE TeosLuokka (
+CREATE TABLE keskusdivari.TeosLuokka (
     id SERIAL PRIMARY KEY,
     nimi VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Teos (
+CREATE TABLE keskusdivari.Teos (
     id SERIAL PRIMARY KEY,
     isbn VARCHAR(17) CHECK (char_length(isbn) IN (10,17)),
     nimi VARCHAR(150) NOT NULL,
     tekija VARCHAR(150) NOT NULL,
     hinta NUMERIC(10,2) NOT NULL,
     paino INT NOT NULL,
-    tyyppiId INT REFERENCES TeosTyyppi(id) ON DELETE SET NULL,
-    luokkaId INT REFERENCES TeosLuokka(id) ON DELETE SET NULL
+    tyyppiId INT REFERENCES keskusdivari.TeosTyyppi(id) ON DELETE SET NULL,
+    luokkaId INT REFERENCES keskusdivari.TeosLuokka(id) ON DELETE SET NULL
 );
 
-CREATE TABLE Nide (
+CREATE TABLE keskusdivari.Nide (
     id SERIAL PRIMARY KEY,
-    teosId NOT NULL REFERENCES Teos(id) ON DELETE CASCADE,
-    divariId INT NOT NULL REFERENCES Divari(id) ON DELETE CASCADE,
+    teosId INT NOT NULL REFERENCES keskusdivari.Teos(id) ON DELETE CASCADE,
+    divariId INT NOT NULL REFERENCES keskusdivari.Divari(id) ON DELETE CASCADE,
     ostohinta NUMERIC(10,2),
     myyntipvm DATE,
-    tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty'))
-    tilausId INT REFERENCES Tilaus(id) ON DELETE SET NULL
+    tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty')),
+    tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL
 );
 
-CREATE TABLE Postikulutaulukko (
+CREATE TABLE keskusdivari.Postikulutaulukko (
     id SERIAL PRIMARY KEY, 
     max_paino INT UNIQUE NOT NULL,
     hinta NUMERIC(10,2) NOT NULL

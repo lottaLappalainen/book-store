@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import pg from 'pg';
 import dotenv from 'dotenv';
 
@@ -15,7 +16,7 @@ export const pool = new Pool({
 });
 
 pool.on('connect', () => {
-    console.log('Connected to postgresql database');
+    console.log('Connected to PostgreSQL database');
 });
 
 pool.on('error', (err) => {
@@ -27,9 +28,19 @@ const backend = express();
 const port = process.env.SERVER_PORT || 3000; // 8069?
 
 backend.use(express.json());
+backend.use(cors()); // Enable CORS for all routes
 
+// Define a simple route to test the server
 backend.get('/', (req, res) => {
-    res.send('hello')
+    res.send('hello');
+});
+
+// Import and use routes
+import { setupUserRoutes } from './db/routes/userRoutes.js';
+setupUserRoutes(backend);
+
+backend.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
 
 backend.listen(port, () => {

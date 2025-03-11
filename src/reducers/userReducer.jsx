@@ -8,7 +8,7 @@ const initialState = {
     switch (action.type) {
     //väliaikaisesti laittaa käyttäjän aina asiakkaaksi kirjautumisen yhteydessä
       case LOGIN:
-        return { ...state, role: 'customer' };
+        return { ...state, role: 'asiakas' };
       case LOGOUT:
         return { ...state, role: 'guest' };
       default:

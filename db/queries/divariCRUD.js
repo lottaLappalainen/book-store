@@ -4,7 +4,7 @@ export const createDivari = (nimi, osoite, omaTietokanta) => {
     if (!nimi || !osoite) throw new Error(missingParams);
     return {
         text: `
-            INSERT INTO Divari (nimi, osoite, omaTietokanta)
+            INSERT INTO keskusdivari.Divari (nimi, osoite, omaTietokanta)
             VALUES ($1, $2, $3)
             RETURNING *;
         `,
@@ -16,21 +16,21 @@ export const getDivari = (id) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     return {
         text: `
-            SELECT * FROM Divari WHERE id = $1;
+            SELECT * FROM keskusdivari.Divari WHERE id = $1;
         `,
         values: [id],
     };
 };
 
 export const getAllDivarit = () => {
-    return { text: `SELECT * FROM Divari`, };
+    return { text: `SELECT * FROM keskusdivari.Divari`, };
 };
 
 export const updateDivari = (id, nimi, osoite, omaTietokanta) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     return {
         text: `
-            UPDATE Divari
+            UPDATE keskusdivari.Divari
             SET nimi = COALESCE($1, nimi),
                 osoite = COALESCE($2, osoite),
                 omaTietokanta = COALESCE($3, omaTietokanta)
@@ -45,7 +45,7 @@ export const deleteDivari = (id) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     return {
         text: `
-            DELETE FROM Divari
+            DELETE FROM keskusdivari.Divari
             WHERE id = $1
             RETURNING *;
         `,
