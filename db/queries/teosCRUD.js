@@ -2,14 +2,16 @@ import { invalidId, invalidISBN, invalidNumericValue, missingParams } from "../.
 import { validateISBN } from "../../utils/validators";
 
 export const createTeos = (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId) => {
-    if (isbn && !validateISBN(isbn) || !isbn || !nimi || !tekija || !hinta || isNaN(hinta) || !paino || isNaN(paino)) throw new Error(missingParams);
+    if (!nimi || !tekija || !hinta || isNaN(hinta) || !paino || isNaN(paino)) throw new Error(missingParams);
+    if (isbn && !validateISBN(isbn)) throw new Error(invalidISBN);
+
     return {
         text: `
             INSERT INTO Teos (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING *;
         `,
-        values: [isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId],
+        values: [isbn || null, nimi, tekija, hinta, paino, tyyppiId, luokkaId],
     };
 };
 
