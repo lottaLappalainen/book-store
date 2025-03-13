@@ -26,7 +26,8 @@ CREATE TABLE divari.Teos (
     julkaisuvuosi INT NOT NULL,
     paino INT NOT NULL,
     tyyppiId INT REFERENCES divari.TeosTyyppi(id) ON DELETE SET NULL,
-    luokkaId INT REFERENCES divari.TeosLuokka(id) ON DELETE SET NULL
+    luokkaId INT REFERENCES divari.TeosLuokka(id) ON DELETE SET NULL,
+    CONSTRAINT unique_nimi_tekija UNIQUE (nimi, tekija)
 );
 
 CREATE TABLE divari.Nide (
