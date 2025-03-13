@@ -23,6 +23,7 @@ CREATE TABLE divari.Teos (
     nimi VARCHAR(150) NOT NULL,
     tekija VARCHAR(150) NOT NULL,
     hinta NUMERIC(10,2) NOT NULL,
+    julkaisuvuosi INT NOT NULL,
     paino INT NOT NULL,
     tyyppiId INT REFERENCES divari.TeosTyyppi(id) ON DELETE SET NULL,
     luokkaId INT REFERENCES divari.TeosLuokka(id) ON DELETE SET NULL
