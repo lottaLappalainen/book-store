@@ -8,7 +8,7 @@ ON CONFLICT DO NOTHING; -- jos haluaa päivittää tietoja, käytä ON CONFLICT 
 
 INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId)
 VALUES ('9155430674', 'Elektran tytär', 'Madeleine Brent', 9.99, 1986, 500, 
-        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'romaani'), 
+        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'romaani'),
         (SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'romantiikka')),
        ('9156381451', 'Tuulentavoittelijan morsian', 'Madeleine Brent', 12.99, 1978, 700,
         (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'romaani'), 
