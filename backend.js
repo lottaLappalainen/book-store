@@ -43,8 +43,4 @@ backend.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-backend.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
-
 export default backend;
