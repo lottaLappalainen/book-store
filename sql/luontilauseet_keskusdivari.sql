@@ -3,16 +3,17 @@ CREATE SCHEMA IF NOT EXISTS keskusdivari;
 
 -- Create tables in the keskusdivari schema
 CREATE TABLE keskusdivari.KeskusdivariInfo (
-    nimi VARCHAR(150) NOT NULL,
-    osoite VARCHAR(150) NOT NULL,
-    nettisivut VARCHAR(150) NOT NULL
+    nimi VARCHAR(150) NOT NULL UNIQUE,
+    osoite VARCHAR(150) NOT NULL UNIQUE,
+    nettisivut VARCHAR(150) NOT NULL UNIQUE
 );
 
 CREATE TABLE keskusdivari.Divari (
     id SERIAL PRIMARY KEY,
     nimi VARCHAR(150) NOT NULL,
     osoite VARCHAR(150) NOT NULL,
-    omaTietokanta BOOLEAN NOT NULL
+    omaTietokanta BOOLEAN NOT NULL,
+    CONSTRAINT unique_nimi_osoite UNIQUE (nimi, osoite)
 );
 
 CREATE TABLE keskusdivari.Kayttaja (
@@ -76,3 +77,75 @@ CREATE TABLE keskusdivari.Postikulutaulukko (
     max_paino INT UNIQUE NOT NULL,
     hinta NUMERIC(10,2) NOT NULL
 );
+
+-- Tapahtuma 6 --
+CREATE OR REPLACE FUNCTION divari.sync_nide_to_keskusdivari()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- First, ensure the related Teos exists in keskusdivari
+    DECLARE
+        keskus_teos_id INTEGER;
+        divari_teos_info RECORD;
+        keskus_divari_id INTEGER;
+        divari_info_d RECORD;
+    BEGIN
+        -- Get the Teos information from divari schema
+        SELECT t.isbn, t.nimi, t.tekija INTO divari_teos_info 
+        FROM divari.Teos t
+        WHERE t.id = NEW.teosId;
+        
+        -- Get the Divari information from divari schema
+        SELECT di.nimi, di.osoite INTO divari_info_d
+        FROM divari.Nide n
+        JOIN divari.Teos t ON n.teosId = t.id
+        JOIN divari.DivariInfo di ON t.divariId = di.id
+        WHERE n.id = NEW.id;
+        
+        -- Get the Divari information from keskusdivari schema
+        SELECT d.id INTO keskus_divari_id
+        FROM keskusdivari.Divari d
+        WHERE d.nimi = divari_info_d.nimi AND d.osoite = divari_info_d.osoite;
+
+        -- Get the corresponding Teos ID from keskusdivari
+        IF (divari_teos_info.isbn IS NOT NULL) THEN
+            SELECT id INTO keskus_teos_id
+            FROM keskusdivari.Teos
+            WHERE isbn = divari_teos_info.isbn
+            LIMIT 1;
+        ELSE
+            SELECT id INTO keskus_teos_id
+            FROM keskusdivari.Teos
+            WHERE nimi = divari_teos_info.nimi AND tekija = divari_teos_info.tekija
+            LIMIT 1;
+        END IF;
+        
+        -- Now insert or update the Nide in keskusdivari
+        INSERT INTO keskusdivari.Nide (
+            teosId, divariId, ostohinta, myyntipvm, tila, tilausId
+        )
+        VALUES (
+            keskus_teos_id,
+            keskus_divari_id,
+            NEW.ostohinta,
+            NEW.myyntipvm,
+            NEW.tila,
+            NULL
+        )
+        ON CONFLICT (id) 
+        DO UPDATE SET
+            ostohinta = EXCLUDED.ostohinta,
+            myyntipvm = EXCLUDED.myyntipvm,
+            tila = EXCLUDED.tila,
+            tilausId = EXCLUDED.tilausId;
+    END;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- T6
+CREATE TRIGGER sync_nide_after_insert_update
+AFTER INSERT OR UPDATE ON divari.Nide
+FOR EACH ROW
+EXECUTE FUNCTION divari.sync_nide_to_keskusdivari();
+-- end tapahtuma 6 --
