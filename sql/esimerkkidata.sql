@@ -60,13 +60,13 @@ VALUES ('historia'), ('romantiikka'), ('dekkari'), ('huumori'), ('opas'), ('seik
 ON CONFLICT DO NOTHING;
 
 
--- TODO: remove
-INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
-VALUES ('9155430674', 'Elektran tytär', 'Madeleine Brent', 9.99, 1986, 500, 
-        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'romaani'),
-        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'romantiikka'), 1)
-ON CONFLICT DO NOTHING;
-
--- pitäis triggeraa
-INSERT INTO divari.Nide (teosId, ostohinta, myyntipvm, tila)
-VALUES((SELECT id FROM divari.Teos WHERE isbn='9155430674'), 5.99, '2021-01-01', 'vapaa');
+-- TRIGGER TESTAUS
+--INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
+--VALUES ('9155430674', 'Elektran tytär', 'Madeleine Brent', 9.99, 1986, 500, 
+--        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'romaani'),
+--        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'romantiikka'), 1)
+--ON CONFLICT DO NOTHING;
+--
+---- pitäis triggeraa
+--INSERT INTO divari.Nide (teosId, ostohinta, myyntipvm, tila)
+--VALUES((SELECT id FROM divari.Teos WHERE isbn='9155430674'), 5.99, '2021-01-01', 'vapaa');
