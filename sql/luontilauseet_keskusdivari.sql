@@ -57,7 +57,8 @@ CREATE TABLE keskusdivari.Teos (
     julkaisuvuosi INT NOT NULL,
     paino INT NOT NULL,
     tyyppiId INT REFERENCES keskusdivari.TeosTyyppi(id) ON DELETE SET NULL,
-    luokkaId INT REFERENCES keskusdivari.TeosLuokka(id) ON DELETE SET NULL
+    luokkaId INT REFERENCES keskusdivari.TeosLuokka(id) ON DELETE SET NULL,
+    CONSTRAINT unique_nimi_tekija UNIQUE (nimi, tekija)
 );
 
 CREATE TABLE keskusdivari.Nide (
