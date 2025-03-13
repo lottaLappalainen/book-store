@@ -3,8 +3,10 @@ CREATE SCHEMA IF NOT EXISTS divari;
 
 -- Create tables in the divari schema
 CREATE TABLE divari.DivariInfo (
+    id SERIAL PRIMARY KEY,
     nimi VARCHAR(150) NOT NULL,
-    osoite VARCHAR(150) NOT NULL
+    osoite VARCHAR(150) NOT NULL,
+    CONSTRAINT unique_nimi_osoite UNIQUE (nimi, osoite)
 );
 
 CREATE TABLE divari.TeosTyyppi (
@@ -27,6 +29,7 @@ CREATE TABLE divari.Teos (
     paino INT NOT NULL,
     tyyppiId INT REFERENCES divari.TeosTyyppi(id) ON DELETE SET NULL,
     luokkaId INT REFERENCES divari.TeosLuokka(id) ON DELETE SET NULL,
+    divariId INT NOT NULL REFERENCES divari.DivariInfo(id) ON DELETE CASCADE, 
     CONSTRAINT unique_nimi_tekija UNIQUE (nimi, tekija)
 );
 
