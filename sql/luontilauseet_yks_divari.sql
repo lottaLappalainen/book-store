@@ -9,17 +9,17 @@ CREATE TABLE divari.DivariInfo (
 
 CREATE TABLE divari.TeosTyyppi (
     id SERIAL PRIMARY KEY,
-    nimi VARCHAR(50) NOT NULL
+    nimi VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE divari.TeosLuokka (
     id SERIAL PRIMARY KEY,
-    nimi VARCHAR(50) NOT NULL
+    nimi VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE divari.Teos (
     id SERIAL PRIMARY KEY,
-    isbn VARCHAR(17) CHECK (char_length(isbn) IN (10, 17)),
+    isbn VARCHAR(17) CHECK (char_length(isbn) IN (10, 13)) UNIQUE,
     nimi VARCHAR(150) NOT NULL,
     tekija VARCHAR(150) NOT NULL,
     hinta NUMERIC(10,2) NOT NULL,
