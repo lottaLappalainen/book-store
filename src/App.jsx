@@ -16,8 +16,10 @@ function App() {
   const notification = useSelector(state => state.notification);
   const role = useSelector(state => state.user.role);
 
+  //TODO: Poista temp kohdat
+
   return (
-    <div>
+    <div className='main-content'>
       {role !== 'guest' &&  <Navbar role={role} onSearch={setSearchQuery} />}
       {notification && <Notification />}
       

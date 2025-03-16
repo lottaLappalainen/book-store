@@ -25,7 +25,7 @@ pool.on('error', (err) => {
 });
 
 const backend = express();
-const port = process.env.SERVER_PORT || 3000; // 8069?
+const port = process.env.SERVER_PORT || 8069; // 8069?
 
 backend.use(express.json());
 backend.use(cors()); // Enable CORS for all routes
