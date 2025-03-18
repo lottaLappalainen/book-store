@@ -1,33 +1,43 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setNotification } from '../actions/notificationActions';
-import { addToOrder } from '../actions/orderActions';
-import { fetchBookById } from '../actions/booksActions';
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setNotification } from "../actions/notificationActions";
+import { addToOrder } from "../actions/orderActions";
+import { fetchBookById } from "../actions/booksActions";
+import { fetchTypes } from "../actions/typesActions";
+import { fetchCategories } from "../actions/categoriesActions";
 
 const SingleBookView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+
   const book = useSelector((state) => state.books.selectedBook);
+  const tyypit = useSelector((state) => state.types.types);
+  const luokat = useSelector((state) => state.categories.categories);
 
   useEffect(() => {
     dispatch(fetchBookById(id));
+    dispatch(fetchTypes());
+    dispatch(fetchCategories());
   }, [dispatch, id]);
+
+  const bookTyyppi = tyypit.find((t) => t.id === book?.tyyppiid)?.nimi || "Tuntematon";
+  const bookLuokka = luokat.find((l) => l.id === book?.luokkaid)?.nimi || "Tuntematon";
 
   const handleAddToOrder = () => {
     dispatch(addToOrder(book));
-    dispatch(setNotification({ message: `"${book.nimi}" lisättiin tilaukseen`, requestStatus: 'success' }));
+    dispatch(setNotification({ message: `"${book.nimi}" lisättiin tilaukseen`, requestStatus: "success" }));
   };
 
   if (!book) return <p>Kirjan tietoja ladataan...</p>;
-  console.log("book", book)
+
   return (
     <div className="single-book-container">
       <h1>{book.nimi}</h1>
       <p><strong>Tekijä:</strong> {book.tekija}</p>
-      <p><strong>Isbn:</strong> {book.isbn}</p>
-      <p><strong>Tyyppi:</strong> {book.tyyppi}</p>
-      <p><strong>Luokka:</strong> {book.luokka}</p>
+      {book.isbn && <p><strong>Isbn:</strong> {book.isbn}</p>} 
+      <p><strong>Tyyppi:</strong> {bookTyyppi}</p>
+      <p><strong>Luokka:</strong> {bookLuokka}</p>
       <button onClick={handleAddToOrder}>Lisää ostoskoriin</button>
     </div>
   );
