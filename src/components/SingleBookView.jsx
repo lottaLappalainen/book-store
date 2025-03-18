@@ -20,11 +20,11 @@ const SingleBookView = () => {
   };
 
   if (!book) return <p>Kirjan tietoja ladataan...</p>;
-
+  console.log("book", book)
   return (
     <div className="single-book-container">
       <h1>{book.nimi}</h1>
-      <p><strong>Tekijä:</strong> {book.tekijä}</p>
+      <p><strong>Tekijä:</strong> {book.tekija}</p>
       <p><strong>Isbn:</strong> {book.isbn}</p>
       <p><strong>Tyyppi:</strong> {book.tyyppi}</p>
       <p><strong>Luokka:</strong> {book.luokka}</p>

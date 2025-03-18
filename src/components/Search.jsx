@@ -65,7 +65,7 @@ const Search = () => {
           filteredBooks.map((book) => (
             <div key={book.id} className="book-card" onClick={() => navigate(`/books/${book.id}`)}>
               <h2>{book.nimi}</h2>
-              <p><strong>Tekijä:</strong> {book.tekijä}</p>
+              <p><strong>Tekijä:</strong> {book.tekija}</p>
               <button onClick={(e) => handleAddToOrder(book, e)}>Lisää ostoskoriin</button>
             </div>
           ))

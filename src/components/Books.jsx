@@ -62,7 +62,7 @@ const Books = ({ searchQuery }) => {
           sortedBooks.map(book => (
             <div key={book.id} className="book-card" onClick={() => navigate(`/books/${book.id}`)}>
               <h2>{book.nimi}</h2>
-              <p><strong>Tekijä:</strong> {book.tekijä}</p>
+              <p><strong>Tekijä:</strong> {book.tekija}</p>
               <button onClick={(e) => { e.stopPropagation(); handleAddToOrder(book); }}>
                 Lisää ostoskoriin
               </button>
