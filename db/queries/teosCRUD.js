@@ -1,5 +1,5 @@
-import { invalidId, invalidISBN, invalidNumericValue, missingParams } from "../../utils/validationMessages";
-import { validateISBN } from "../../utils/validators";
+import { invalidId, invalidISBN, invalidNumericValue, missingParams } from "../../utils/validationMessages.js";
+import { validateISBN } from "../../utils/validators.js";
 
 // TODO: tee schemasta parametri jotta voidaan käyttää tätä sekä keskusdivarissa että divarissa
 export const createTeos = (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId) => {
@@ -23,7 +23,7 @@ export const getTeosWithNideCount = (id) => {
         text: `
             SELECT t.*, COALESCE(COUNT(n.id), 0) AS kpl 
             FROM keskusdivari.Teos t
-            LEFT JOIN Nide n ON t.id = n.teosId
+            LEFT JOIN keskusdivari.Nide n ON t.id = n.teosId
             WHERE t.id = $1
             GROUP BY t.id;
         `,
@@ -37,7 +37,7 @@ export const getAllTeoksetWithNideCount = () => {
         text: `
             SELECT t.*, COALESCE(COUNT(n.id), 0) AS kpl 
             FROM keskusdivari.Teos t
-            LEFT JOIN Nide n ON t.id = n.teosId
+            LEFT JOIN keskusdivari.Nide n ON t.id = n.teosId
             GROUP BY t.id;
         `,
     };
