@@ -43,14 +43,12 @@ function Register() {
         navigate("/login");
       } else {
         const error = await response.json();
-        alert('Error: ' + error.message);
+        dispatch(setNotification({ message: 'Error: ' + error.message, requestStatus: 'error' }));
       }
     } catch (error) {
-      alert('Error: ' + error.message);
+      dispatch(setNotification({ message: 'Error: ' + error.message, requestStatus: 'error' }));
     }
 
-    dispatch(setNotification({ message: 'Rekisteröinti onnistui, siirry kirjautumiseen', requestStatus: 'success' }));
-    navigate("/login");
   };
 
   return (

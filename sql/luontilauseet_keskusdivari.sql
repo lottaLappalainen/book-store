@@ -69,8 +69,10 @@ CREATE TABLE keskusdivari.Nide (
     ostohinta NUMERIC(10,2),
     myyntipvm DATE,
     tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty')),
-    tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL
+    tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL,
+    CONSTRAINT unique_teosid_divariid UNIQUE (teosId, divariId) 
 );
+
 
 CREATE TABLE keskusdivari.Postikulutaulukko (
     id SERIAL PRIMARY KEY, 

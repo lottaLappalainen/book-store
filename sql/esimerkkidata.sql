@@ -59,6 +59,17 @@ INSERT INTO divari.TeosLuokka (nimi)
 VALUES ('historia'), ('romantiikka'), ('dekkari'), ('huumori'), ('opas'), ('seikkailu'), ('sikailu')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO keskusdivari.Nide (teosId, divariId, ostohinta, myyntipvm, tila, tilausid)
+VALUES 
+    ((SELECT id FROM keskusdivari.Teos WHERE COALESCE(isbn, '') = '9155430674'), 1, 5.99, '2021-01-01', 'vapaa', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE COALESCE(isbn, '') = '9156381451'), 1, 7.99, '2021-02-15', 'myyty', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE COALESCE(isbn, '') = '9789510396230'), 2, 4.99, '2023-05-20', 'varattu', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE nimi='Komisario Palmun erehdys' AND tekija='Mika Waltari'), 2, 6.50, NULL, 'vapaa', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE nimi='Friikkilän pojat Mexicossa' AND tekija='Shelton Gilbert'), 1, 3.50, '2022-10-10', 'myyty', NULL)
+ON CONFLICT (teosId, divariId) 
+DO UPDATE SET ostohinta = EXCLUDED.ostohinta, 
+              myyntipvm = EXCLUDED.myyntipvm, 
+              tila = EXCLUDED.tila;
 
 -- TRIGGER TESTAUS
 --INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
