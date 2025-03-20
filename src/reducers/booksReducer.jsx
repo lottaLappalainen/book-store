@@ -1,4 +1,4 @@
-import { FETCH_BOOKS, FETCH_BOOK, ADD_BOOK } from '../actions/booksActions';
+import { FETCH_BOOKS, FETCH_BOOK, ADD_BOOK, ADD_TEOS_D1, ADD_TEOS_D2 } from '../actions/booksActions';
 
 const initialState = {
   books: [],
@@ -14,6 +14,8 @@ const booksReducer = (state = initialState, action) => {
       return { ...state, selectedBook: action.payload };
 
     case ADD_BOOK:
+    case ADD_TEOS_D1:
+    case ADD_TEOS_D2:
       return { ...state, books: [...state.books, action.payload] };
 
     default:

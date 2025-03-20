@@ -17,8 +17,8 @@ export const createTeos = (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId)
 };
 
 // T2
-export const createTeosForDivari = (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId, divariId) => {
-    if (!nimi || !tekija || !hinta || isNaN(hinta) || !paino || isNaN(paino)) {
+export const createTeosForDivari = (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId) => {
+    if (!nimi || !tekija || !hinta || isNaN(hinta) || !julkaisuvuosi || isNaN(julkaisuvuosi) || !paino || isNaN(paino)) {
         throw new Error("Missing or invalid parameters.");
     }
     if (isbn && !validateISBN(isbn)) {
@@ -28,19 +28,20 @@ export const createTeosForDivari = (isbn, nimi, tekija, hinta, paino, tyyppiId, 
     return {
         text: `
             WITH inserted_teos AS (
-                INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId)
-                VALUES ($1, $2, $3, $4, $5, $6, $7)
+                INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                 ON CONFLICT (isbn) DO NOTHING
                 RETURNING id
             )
-            INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId, divariId)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             ON CONFLICT (nimi, tekija) DO NOTHING
             RETURNING id;
         `,
-        values: [isbn || null, nimi, tekija, hinta, paino, tyyppiId || null, luokkaId || null, divariId],
+        values: [isbn || null, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId || null, luokkaId || null, divariId],
     };
 };
+
 
 // T3
 export const addTeosToDivari = (teosId, divariId, ostohinta) => {
