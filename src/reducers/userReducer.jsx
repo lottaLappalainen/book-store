@@ -22,7 +22,6 @@ const userReducer = (state = initialState, action) => {
       return { ...state, loading: true, error: null };
 
     case LOGIN_SUCCESS:
-      console.log("here", action.payload)
       return { ...state, email: action.payload.email, role: action.payload.role, loading: false, error: null };
 
     case REGISTER_SUCCESS:

@@ -5,7 +5,7 @@ export const ADD_TEOS_D1 = 'ADD_TEOS_D1';
 export const ADD_TEOS_D2 = 'ADD_TEOS_D2';
 import { setNotification } from '../actions/notificationActions';
 
-const API_URL = 'http://tie-tkannat.it.tuni.fi:8069/api';
+const API_URL = 'http://tie-tkannat.it.tuni.fi:8068/api';
 
 // Hakee kaikki kirjat
 export const fetchBooks = () => async (dispatch) => {
