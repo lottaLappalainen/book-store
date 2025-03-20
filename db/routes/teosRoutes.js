@@ -21,10 +21,10 @@ export const setupTeosRoutes = (backend) => {
 
     /* ------------------ Create Teos Keskusdivariin ja d1 ---------------------- */
     backend.post('/api/divari/teos', async (req, res) => {
-        const { isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId, divariId } = req.body;
+        const { isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId } = req.body;
     
         try {
-            const queryData = q.createTeosForDivari(isbn, nimi, tekija, hinta, paino, tyyppiId, luokkaId, divariId);
+            const queryData = q.createTeosForDivari(isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId);
             const result = await pool.query(queryData.text, queryData.values);
             res.status(201).json(result.rows[0]);
         } catch (error) {
