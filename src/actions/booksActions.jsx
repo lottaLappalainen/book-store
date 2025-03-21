@@ -1,13 +1,15 @@
+import { setNotification } from '../actions/notificationActions';
+
 export const FETCH_BOOKS = 'FETCH_BOOKS';
 export const FETCH_BOOK = 'FETCH_BOOK';
 export const ADD_BOOK = 'ADD_BOOK';
 export const ADD_TEOS_D1 = 'ADD_TEOS_D1';
 export const ADD_TEOS_D2 = 'ADD_TEOS_D2';
-import { setNotification } from '../actions/notificationActions';
 
-const API_URL = 'http://tie-tkannat.it.tuni.fi:8068/api';
+const API_URL = `http://tie-tkannat.it.tuni.fi:${import.meta.env.VITE_SERVER_PORT}/api`;
+export const SYNC_DIVARIT  = 'SYNC_DIVARIT';
 
-// Hakee kaikki kirjat
+
 export const fetchBooks = () => async (dispatch) => {
     dispatch(setNotification({ message: 'Haetaan kirjoja...', requestStatus: 'loading' }));
     try {
@@ -68,5 +70,15 @@ export const addTeosToD2 = (teosId, divariId, ostohinta) => async (dispatch) => 
     } catch (error) {
         dispatch(setNotification({ message: 'Virhe teoksen lisäyksessä', requestStatus: 'error' }));
         console.error('Error adding book to D2:', error);
+    }
+};
+
+export const syncDivaris = () => async (dispatch) => {
+    try {
+        const response = await fetch(`${API_URL}/sync`);
+        const data = await response.json();
+        dispatch({ type: SYNC_DIVARIT, payload: data });
+    } catch (error) {
+        console.error('Error updating divari:', error);
     }
 };

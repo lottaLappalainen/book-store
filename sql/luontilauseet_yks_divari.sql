@@ -29,7 +29,9 @@ CREATE TABLE divari.Teos (
     paino INT NOT NULL,
     tyyppiId INT REFERENCES divari.TeosTyyppi(id) ON DELETE SET NULL,
     luokkaId INT REFERENCES divari.TeosLuokka(id) ON DELETE SET NULL,
-    divariId INT NOT NULL REFERENCES divari.DivariInfo(id) ON DELETE CASCADE, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    divariId INT NOT NULL REFERENCES divari.DivariInfo(id) ON DELETE CASCADE,
     CONSTRAINT unique_nimi_tekija UNIQUE (nimi, tekija)
 );
 
@@ -38,5 +40,25 @@ CREATE TABLE divari.Nide (
     teosId INT NOT NULL REFERENCES divari.Teos(id) ON DELETE CASCADE,
     ostohinta NUMERIC(10,2),
     myyntipvm DATE,
-    tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty'))
+    tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty')),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Automatically update the `updated_at` column on updates
+CREATE OR REPLACE FUNCTION update_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_timestamp_on_teos
+BEFORE UPDATE ON divari.Teos
+FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+
+CREATE TRIGGER set_timestamp_on_nide
+BEFORE UPDATE ON divari.Nide
+FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();

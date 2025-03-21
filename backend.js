@@ -25,7 +25,7 @@ pool.on('error', (err) => {
 });
 
 const backend = express();
-const port = process.env.SERVER_PORT || 3000; // 8069?
+const port = process.env.SERVER_PORT;
 
 backend.use(express.json());
 backend.use(cors()); // Enable CORS for all routes
@@ -40,6 +40,9 @@ import { setupUserRoutes } from './db/routes/userRoutes.js';
 setupUserRoutes(backend);
 import { setupTeosRoutes } from './db/routes/teosRoutes.js';
 setupTeosRoutes(backend);
+
+import { setupUtils } from './db/routes/utilRoutes.js';
+setupUtils(backend);
 
 backend.listen(port, () => {
     console.log(`Server running on port ${port}`);

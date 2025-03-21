@@ -8,6 +8,12 @@ CREATE TABLE keskusdivari.KeskusdivariInfo (
     nettisivut VARCHAR(150) NOT NULL UNIQUE
 );
 
+CREATE TABLE keskusdivari.SyncStatus (
+    id SERIAL PRIMARY KEY,
+    tauluNimi VARCHAR(50) NOT NULL,
+    edellinenSync TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
 CREATE TABLE keskusdivari.Divari (
     id SERIAL PRIMARY KEY,
     nimi VARCHAR(150) NOT NULL,
@@ -95,18 +101,6 @@ BEGIN
         SELECT t.isbn, t.nimi, t.tekija INTO divari_teos_info 
         FROM divari.Teos t
         WHERE t.id = NEW.teosId;
-        
-        -- Get the Divari information from divari schema
-        SELECT di.nimi, di.osoite INTO divari_info_d
-        FROM divari.Nide n
-        JOIN divari.Teos t ON n.teosId = t.id
-        JOIN divari.DivariInfo di ON t.divariId = di.id
-        WHERE n.id = NEW.id;
-        
-        -- Get the Divari information from keskusdivari schema
-        SELECT d.id INTO keskus_divari_id
-        FROM keskusdivari.Divari d
-        WHERE d.nimi = divari_info_d.nimi AND d.osoite = divari_info_d.osoite;
 
         -- Get the corresponding Teos ID from keskusdivari
         IF (divari_teos_info.isbn IS NOT NULL) THEN
@@ -120,7 +114,24 @@ BEGIN
             WHERE nimi = divari_teos_info.nimi AND tekija = divari_teos_info.tekija
             LIMIT 1;
         END IF;
-        
+
+        -- Don't do anything if teos not found in keskusdivari (so that it doesn't overlap with t7)
+        IF (keskus_teos_id IS NULL) THEN
+            RETURN NULL;
+        END IF;
+
+        -- Get the Divari information from divari schema
+        SELECT di.nimi, di.osoite INTO divari_info_d
+        FROM divari.Nide n
+        JOIN divari.Teos t ON n.teosId = t.id
+        JOIN divari.DivariInfo di ON t.divariId = di.id
+        WHERE n.id = NEW.id;
+
+        -- Get the Divari information from keskusdivari schema
+        SELECT d.id INTO keskus_divari_id
+        FROM keskusdivari.Divari d
+        WHERE d.nimi = divari_info_d.nimi AND d.osoite = divari_info_d.osoite;
+
         -- Now insert or update the Nide in keskusdivari
         INSERT INTO keskusdivari.Nide (
             teosId, divariId, ostohinta, myyntipvm, tila, tilausId

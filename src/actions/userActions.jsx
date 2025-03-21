@@ -9,12 +9,14 @@ export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
 
+const API_URL = `http://tie-tkannat.it.tuni.fi:${import.meta.env.VITE_SERVER_PORT}/api`;
+
 export const loginUser = (email, password, navigate) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
   dispatch(setNotification({ message: 'Kirjaudutaan sisään...', requestStatus: 'loading' }));
 
   try {
-    const response = await fetch('http://tie-tkannat.it.tuni.fi:8069/api/login', {
+    const response = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sposti: email, salasana: password })
@@ -25,7 +27,8 @@ export const loginUser = (email, password, navigate) => async (dispatch) => {
     }
 
     const result = await response.json();
-    dispatch({ type: LOGIN_SUCCESS, payload: { email, role: result.kayttaja.rooli } });
+    console.log(result);
+    dispatch({ type: LOGIN_SUCCESS, payload: { email, role: result.role } });
     dispatch(setNotification({ message: 'Kirjautuminen onnistui!', requestStatus: 'success' }));
 
     navigate("/books");
@@ -41,7 +44,7 @@ export const registerUser = (formData, navigate) => async (dispatch) => {
   dispatch(setNotification({ message: 'Rekisteröidään käyttäjää...', requestStatus: 'loading' }));
 
   try {
-    const response = await fetch('http://tie-tkannat.it.tuni.fi:8069/api/register', {
+    const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
