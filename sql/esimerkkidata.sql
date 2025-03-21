@@ -8,6 +8,13 @@ INSERT INTO keskusdivari.TeosLuokka (nimi)
 VALUES ('historia'), ('romantiikka'), ('dekkari'), ('huumori'), ('opas'), ('seikkailu'), ('sikailu')
 ON CONFLICT DO NOTHING; -- jos haluaa päivittää tietoja, käytä ON CONFLICT (nimi) DO UPDATE SET nimi = EXCLUDED.nimi;
 
+INSERT INTO keskusdivari.Kayttaja (nimi, osoite, sposti, puh, salasana, rooli)
+VALUES 
+    ('Asiakas', 'Testikuja 1, 00100 Helsinki', 'asiakas@testi.com', '0401234567', 'asiakas', 'asiakas'),
+    ('Yllapitaja', 'Hallintotie 2, 00200 Espoo', 'admin@testi.com', '0509876543', 'admin', 'yllapitaja')
+ON CONFLICT (sposti) DO NOTHING;
+-- esimerkki käyttäjät
+
 INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId)
 VALUES ('9155430674', 'Elektran tytär', 'Madeleine Brent', 9.99, 1986, 500, 
         (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'romaani'),
