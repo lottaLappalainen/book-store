@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { logout } from '../actions/userActions';
+import { syncDivaris } from "../actions/booksActions";
 
 function Navbar({ role }) {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function Navbar({ role }) {
         {role === "asiakas" && <li><Link to="/order">Ostoskori</Link></li>}
         {role === "yllapitaja" && <li><Link to="/addbook">Lisää kirja</Link></li>}
       </ul>
+      {role === "yllapitaja" && <button onClick={() => dispatch(syncDivaris())}>Synkkaa divarit</button>}
       <button onClick={() => dispatch(logout())}>Kirjaudu ulos</button>
     </nav>
   );

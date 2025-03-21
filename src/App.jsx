@@ -16,8 +16,6 @@ function App() {
   const role = useSelector(state => state.user.role);
   const user = useSelector(state => state.user);
 
-  console.log("user", user)
-  
   return (
     <div>
       {role !== 'guest' &&  <Navbar role={role} />}
