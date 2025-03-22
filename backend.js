@@ -15,9 +15,9 @@ export const pool = new Pool({
     port: process.env.PORT
 });
 
-pool.on('connect', () => {
-    console.log('Connected to PostgreSQL database');
-});
+pool.connect()
+    .then(() => console.log('✅ Connected to PostgreSQL database'))
+    .catch(err => console.error('❌ Failed to connect to database:', err.message));
 
 pool.on('error', (err) => {
     console.error('Unexpected error on idle client', err);
@@ -25,7 +25,7 @@ pool.on('error', (err) => {
 });
 
 const backend = express();
-const port = process.env.SERVER_PORT || 8069; // 8069?
+const port = process.env.SERVER_PORT;
 
 backend.use(express.json());
 backend.use(cors()); // Enable CORS for all routes
@@ -38,6 +38,11 @@ backend.get('/', (req, res) => {
 // Import and use routes
 import { setupUserRoutes } from './db/routes/userRoutes.js';
 setupUserRoutes(backend);
+import { setupTeosRoutes } from './db/routes/teosRoutes.js';
+setupTeosRoutes(backend);
+
+import { setupUtils } from './db/routes/utilRoutes.js';
+setupUtils(backend);
 
 backend.listen(port, () => {
     console.log(`Server running on port ${port}`);

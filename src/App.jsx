@@ -12,15 +12,15 @@ import Register from './components/Register';
 import Search from './components/Search';
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState("");
   const notification = useSelector(state => state.notification);
   const role = useSelector(state => state.user.role);
+  const user = useSelector(state => state.user);
 
   //TODO: Poista temp kohdat
 
   return (
     <div className='main-content'>
-      {role !== 'guest' &&  <Navbar role={role} onSearch={setSearchQuery} />}
+      {role !== 'guest' &&  <Navbar role={role} />}
       {notification && <Notification />}
       
       <Routes>
@@ -33,7 +33,7 @@ function App() {
         ) : (
           <>
             <Route path="/" element={<Navigate to="/books" />} />
-            <Route path="/books" element={<Books searchQuery={searchQuery} />} />
+            <Route path="/books" element={<Books />} />
             <Route path="/books/:id" element={<SingleBookView />} />
             <Route path="/search" element={<Search />} />
             <Route path="/order" element={<Order />} />

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { logout } from '../actions/userActions';
+import { syncDivaris } from "../actions/booksActions";
 import '../styles/Navbar.css';
 
 function Navbar({ role }) {
