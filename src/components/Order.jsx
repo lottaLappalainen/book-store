@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../actions/notificationActions';
 import { updateOrderQuantity, clearOrder } from '../actions/orderActions';
+import OrderSummary from './widgets/OrderSummary';
+import '../styles/order.css';
 
 const Order = () => {
   const order = useSelector((state) => state.order);
@@ -19,12 +21,14 @@ const Order = () => {
     dispatch(setNotification({ message: 'Tilaus peruttu.', requestStatus: 'error' }));
     dispatch(clearOrder());
   };
-
+  console.log(order)
   return (
     <div className="order-container">
       <h1>Ostoskori</h1>
+      
       {order.length > 0 ? (
         <>
+          <OrderSummary items={order}/>
           <ul>
             {order.map((item) => (
               <li key={item.id}>
@@ -36,8 +40,8 @@ const Order = () => {
           </ul>
           <h4>Postikulut: </h4>
           <h4>Kokonaishinta: </h4>
-          <button onClick={handleOrder}>Place Order</button>
-          <button onClick={handleCancelOrder}>Cancel Order</button>
+          <button className='button-primary-light' onClick={handleOrder}>Place Order</button>
+          <button className='button-secondary-light' onClick={handleCancelOrder}>Cancel Order</button>
         </>
       ) : (
         <p>Ostoskori on tyhjä.</p>

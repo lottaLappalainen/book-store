@@ -26,21 +26,20 @@
     --letter-spacing-wide: 0.5px;
 
     /*colors*/
-    --color-primary: #6c584c;
-    --color-primary-light: #938b86;
-    --color-primary-dark: #332a26;
+    --color-primary: #2d3f9c;
+    --color-primary-light: #e8eaf6;
+    --color-primary-dark: #16247b;
 
-    --color-secondary: #b7c778;
-    --color-secondary-light: #dbe4b9;
-    --color-secondary-dark: #606c4c;
+    --color-secondary: #2d9c89;
+    --color-secondary-light: #e2f3f1;
+    --color-secondary-dark: #195243;
 
-    --color-white: #edf0f3;
+    
     --color-black: #101416;
+    --color-white: #ffff;
     --color-gray-light: #ececec;
     --color-gray: #cecece;
     --color-gray-dark: #aeadac;
-
-    --color-neutral: #f6f8ee;
 
 
     /*Spacing*/
@@ -53,6 +52,7 @@
 
     /*Border radius*/
     --border-radius-soft: 4px;
+    --border-radius-circle: 50%;
 
     /*z-index*/
     --layer-background: -1;
@@ -100,7 +100,7 @@ button {
     font-weight: var(--font-weight-semi-bold);
     cursor: pointer;
     border-radius: var(--border-radius-soft);
-    border: 1px solid;
+    border: 2px solid;
     box-shadow: var(--shadow-base);
 }
 
@@ -109,12 +109,52 @@ button.button-primary {
     color: var(--color-white);
     border-color: var(--color-primary);
 }
+button.button-primary-light {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+}
 
 button.button-secondary {
     background-color: var(--color-secondary);
-    color: var(--color-black);
+    color: var(--color-white);
     border-color: var(--color-secondary);
 }
+button.button-secondary-light {
+    background-color: var(--color-white);
+    color: var(--color-secondary)
+}
+
+table {
+    border-radius: var(--border-radius-soft);
+    border: 1px solid var(--color-gray-light);
+    box-shadow: var(--shadow-base);
+    border-collapse: collapse;
+}
+
+th {
+    text-align: start;
+    padding: var(--space-s);
+
+}
+
+td {
+    padding: var(--space-s);
+    border-bottom: 1px solid var(--color-gray-light);
+}
+
+tr.data-row {
+    cursor: default;
+}
+tr.data-row:hover {
+    background-color: var(--color-gray-light);
+}
+
+tfoot th {
+    text-align: right;
+}
+
+
+
 
 button.button-small {
     height: 32px;

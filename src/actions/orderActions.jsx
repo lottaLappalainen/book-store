@@ -2,6 +2,7 @@ export const ADD_TO_ORDER = 'ADD_TO_ORDER';
 export const REMOVE_FROM_ORDER = 'REMOVE_FROM_ORDER';
 export const UPDATE_ORDER_QUANTITY = 'UPDATE_ORDER_QUANTITY';
 export const CLEAR_ORDER = 'CLEAR_ORDER';
+export const UPDATE_ORDER_PRICE = 'UPDATE_ORDER_PRICE';
 
 export const addToOrder = (book) => ({
   type: ADD_TO_ORDER,
@@ -21,3 +22,9 @@ export const updateOrderQuantity = (bookId, amount) => ({
 export const clearOrder = () => ({
   type: CLEAR_ORDER,
 });
+
+export const updateOrderPrice = () => ({
+  type: UPDATE_ORDER_PRICE,
+  payload: orderId,
+});
+
