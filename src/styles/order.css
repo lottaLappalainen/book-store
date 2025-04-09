@@ -1,0 +1,72 @@
+
+button.action-button {
+    aspect-ratio: 1/1;
+    border-radius: var(--border-radius-circle);
+    height: var(--font-size-l);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.summary-card {
+    background-color: var(--color-primary-light);
+    padding: var(--space-m);
+    border-radius: var(--border-radius-soft);
+    max-width: 800px;
+    margin: auto;
+}
+
+div.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-s);
+    font-size: var(--font-size-s);
+}
+
+div.checkbox-wrapper {
+    display: grid;
+    gap: var(--space-xs);
+    box-sizing: border-box;
+}
+
+div.checkbox-wrapper > span:first-child {
+    font-weight: var(--font-weight-semi-bold);
+}
+
+div.checkbox-wrapper > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    appearance: none;
+}
+
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+div.input-wrapper {
+    display: grid;
+    gap: var(--space-xs);
+}
+
+div.order-row {
+    border-bottom: 1px solid var(--color-gray);
+    margin-bottom: var(--space-s);
+    padding: var(--space-s);
+}
+
+div.book-row {
+    font-size: var(--font-size-s);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
