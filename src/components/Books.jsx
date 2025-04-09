@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setNotification } from '../actions/notificationActions';
-import { addToOrder } from '../actions/orderActions';
+import { addToBasket } from '../actions/basketActions';
 import { fetchBooks } from '../actions/booksActions';
 import '../styles/Books.css';
 
@@ -16,9 +16,8 @@ const Books = () => {
     dispatch(setNotification({ message: 'Kirjat haettu onnistuneesti', requestStatus: 'success' }));
   }, [dispatch]);
 
-  const handleAddToOrder = (book) => {
-    dispatch(addToOrder(book));
-    dispatch(setNotification({ message: `"${book.nimi}" lisättiin ostoskoriin`, requestStatus: 'success' }));
+  const handleAddToBasket = (book) => {
+    dispatch(addToBasket(book));
   };
 
   return (
@@ -30,7 +29,7 @@ const Books = () => {
             <div key={book.id} className="book-card" onClick={() => navigate(`/books/${book.id}`)}>
               <h2>{book.nimi}</h2>
               <p><strong>Tekijä:</strong> {book.tekija}</p>
-              <button className='button-secondary' onClick={(e) => { e.stopPropagation(); handleAddToOrder(book); }}>
+              <button className='button-secondary' onClick={(e) => { e.stopPropagation(); handleAddToBasket(book); }}>
                 Lisää ostoskoriin
               </button>
             </div>

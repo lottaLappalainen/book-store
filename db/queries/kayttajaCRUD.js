@@ -13,7 +13,7 @@ export const createKayttaja = (nimi, osoite, sposti, puh, salasana, rooli = 'asi
         `,
         values: [nimi, osoite, sposti, puh, salasana, rooli],
     };
-}
+};
 
 export const getKayttaja = (id) => {
     if (!id || isNaN(id)) throw new Error(invalidId);

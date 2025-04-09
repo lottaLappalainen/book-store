@@ -9,6 +9,8 @@ export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
 
+export const UPDATE_USER_PHONE = 'UPDATE_USER_PHONE';
+
 const API_URL = `http://tie-tkannat.it.tuni.fi:${import.meta.env.VITE_SERVER_PORT}/api`;
 
 export const loginUser = (email, password, navigate) => async (dispatch) => {
@@ -27,8 +29,7 @@ export const loginUser = (email, password, navigate) => async (dispatch) => {
     }
 
     const result = await response.json();
-    console.log(result);
-    dispatch({ type: LOGIN_SUCCESS, payload: { email, role: result.role } });
+    dispatch({ type: LOGIN_SUCCESS, payload: result });
     dispatch(setNotification({ message: 'Kirjautuminen onnistui!', requestStatus: 'success' }));
 
     navigate("/books");
@@ -77,3 +78,8 @@ export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT });
   dispatch(setNotification({ message: 'Uloskirjautuminen onnistui', requestStatus: 'success' }));
 };
+
+export const updateUserPhone = (phone) => ({
+  type: UPDATE_USER_PHONE,
+  payload: phone,
+});

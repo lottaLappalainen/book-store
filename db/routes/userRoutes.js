@@ -50,10 +50,12 @@ export const setupUserRoutes = (backend) => {
 
             const kayttaja = result.rows[0];
 
+
             if (salasana !== kayttaja.salasana) {
                 return res.status(401).json({ error: 'Invalid email or password' });
             }
-            res.status(200).json({ message: 'Login successful', role: kayttaja.rooli });
+            
+            res.status(200).json({ message: 'Login successful', id: kayttaja.id, name: kayttaja.nimi, role: kayttaja.rooli, email: kayttaja.sposti, phone: kayttaja.puh, address: kayttaja.osoite});
         } catch (error) {
             res.status(400).json({ error: error.message });
         }

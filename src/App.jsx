@@ -4,12 +4,13 @@ import { useSelector } from 'react-redux';
 import Notification from './components/Notification';
 import Books from './components/Books';
 import SingleBookView from './components/SingleBookView';
-import Order from './components/Order';
+import Basket from './components/Basket';
 import AddBookForm from './components/AddBookForm';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
 import Search from './components/Search';
+import Order from './components/Order';
 
 function App() {
   const notification = useSelector(state => state.notification);
@@ -36,8 +37,9 @@ function App() {
             <Route path="/books" element={<Books />} />
             <Route path="/books/:id" element={<SingleBookView />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/order" element={<Order />} />
+            <Route path="/basket" element={<Basket />} />
             <Route path="/addbook" element={<AddBookForm />} />
+            <Route path='/order' element={<Order/>}/>
             <Route path="*" element={<Navigate to="/books" />} />
           </>
         )}

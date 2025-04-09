@@ -5,12 +5,17 @@ import {
   LOGOUT,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
-  REGISTER_FAILURE
+  REGISTER_FAILURE,
+  UPDATE_USER_PHONE
 } from '../actions/userActions';
 
 const initialState = {
-  email: null,
+  id: null,
+  name: null,
   role: 'guest',
+  email: null,
+  phone: null,
+  address: null,
   loading: false,
   error: null
 };
@@ -22,7 +27,17 @@ const userReducer = (state = initialState, action) => {
       return { ...state, loading: true, error: null };
 
     case LOGIN_SUCCESS:
-      return { ...state, email: action.payload.email, role: action.payload.role, loading: false, error: null };
+      return { 
+        ...state,
+        id: action.payload.id,
+        name: action.payload.name, 
+        email: action.payload.email, 
+        role: action.payload.role, 
+        phone: action.payload.phone, 
+        address: action.payload.address,
+        loading: false, 
+        error: null 
+      };
 
     case REGISTER_SUCCESS:
       return { ...state, loading: false, error: null };
@@ -33,6 +48,9 @@ const userReducer = (state = initialState, action) => {
 
     case LOGOUT:
       return { ...initialState };
+
+    case UPDATE_USER_PHONE:
+      return { ...state, phone: action.payload };
 
     default:
       return state;

@@ -13,7 +13,7 @@ function Navbar({ role }) {
         <ul className="nav-links">
           <li><Link to="/books">Kirjat</Link></li>
           <li><Link to="/search">Hae tuotteita</Link></li> 
-          {(role === "asiakas") && <li><Link to="/order">Ostoskori</Link></li>}
+          {(role === "asiakas") && <li><Link to="/basket">Ostoskori</Link></li>}
           {(role === "yllapitaja") && <li><Link to="/addbook">Lisää kirja</Link></li>}
         </ul>
         <button className="button-secondary button-small" onClick={() => dispatch(logout())}>Kirjaudu ulos</button>
