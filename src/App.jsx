@@ -36,7 +36,7 @@ function App() {
             <Route path="/" element={<Navigate to="/books" />} />
             <Route path="/books" element={<Books />} />
             <Route path="/books/:id" element={<SingleBookView />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/search" element={<Search role={role}/>} />
             <Route path="/basket" element={<Basket />} />
             <Route path="/addbook" element={<AddBookForm />} />
             <Route path='/order' element={<Order/>}/>

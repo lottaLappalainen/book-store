@@ -7,7 +7,7 @@ import { fetchTypes } from "../actions/typesActions";
 import { fetchCategories } from "../actions/categoriesActions";
 import "../styles/Books.css";
 
-const Search = () => {
+const Search = ({role}) => {
   const [nimi, setNimi] = useState("");
   const [tekijä, setTekijä] = useState("");
   const [selectedType, setSelectedType] = useState("");
@@ -48,6 +48,26 @@ const Search = () => {
     dispatch(setNotification({ message: `"${book.nimi}" lisättiin ostoskoriin`, requestStatus: "success" }));
   };
 
+  const calculatePrices = () => {
+    const booksToCalculate = selectedCategory
+      ? books.filter((book) => {
+          const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
+          return normalizeText(bookLuokka) === normalizeText(selectedCategory);
+        })
+      : books;
+
+    const totalPrice = booksToCalculate.reduce((sum, book) => {
+      const price = parseFloat(book.hinta) || 0; // Ensure hinta is a valid number
+      return sum + price;
+    }, 0);
+
+    const avgPrice = booksToCalculate.length > 0 ? (totalPrice / booksToCalculate.length).toFixed(2) : 0;
+
+    return { totalPrice: totalPrice.toFixed(2), avgPrice }; // Format totalPrice to 2 decimal places
+  };
+
+  const { totalPrice, avgPrice } = calculatePrices();
+
   return (
     <div className="search-container">
       <h1>Hae tuotteita</h1>
@@ -74,6 +94,11 @@ const Search = () => {
           ))}
         </select>
       </div>
+
+      {role === "yllapitaja" && <div className="price-summary">
+        <p><strong>Kokonaishinta:</strong> {totalPrice}</p>
+        <p><strong>Keskihinta:</strong> {avgPrice}</p>
+      </div>}
 
       <div className="books-grid">
         {filteredBooks.length > 0 ? (
