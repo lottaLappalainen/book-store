@@ -27,20 +27,44 @@ const Search = ({role}) => {
 
   const normalizeText = (text) => text.toLowerCase().trim();
 
-  const filteredBooks = books.filter((book) => {
-    const bookNimi = book.nimi ? normalizeText(book.nimi) : "";
-    const bookTekija = book.tekija ? normalizeText(book.tekija) : "";
+  const getRelevanceScore = (title, searchWords) => {
+    const titleWords = title.toLowerCase().split(/\s+/);
+    let score = 0;
+  
+    for (const word of searchWords) {
+      if (
+        titleWords.some(w => w.includes(word)) // partial or full match
+      ) {
+        score += 1;
+      }
+    }
+  
+    return score;
+  };
+  
+  
+  const filteredBooks = books
+    .map((book) => {
+      const bookNimi = book.nimi ? normalizeText(book.nimi) : "";
+      const bookTekija = book.tekija ? normalizeText(book.tekija) : "";
+  
+      const bookTyyppi = tyypit.find((t) => t.id === book.tyyppiid)?.nimi || "";
+      const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
+  
+      const nameMatches = nimi ? getRelevanceScore(bookNimi, normalizeText(nimi).split(" ")) : 0;
+      const authorMatch = tekijä ? bookTekija.includes(normalizeText(tekijä)) : true;
+      const typeMatch = selectedType ? normalizeText(bookTyyppi) === normalizeText(selectedType) : true;
+      const categoryMatch = selectedCategory ? normalizeText(bookLuokka) === normalizeText(selectedCategory) : true;
+      console.log("Testing:", bookNimi, "=>", normalizeText(nimi).split(" "), "score:", getRelevanceScore(bookNimi, normalizeText(nimi).split(" ")));
 
-    const bookTyyppi = tyypit.find((t) => t.id === book.tyyppiid)?.nimi || "";
-    const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
-
-    return (
-      (nimi ? bookNimi.includes(normalizeText(nimi)) : true) &&
-      (tekijä ? bookTekija.includes(normalizeText(tekijä)) : true) &&
-      (selectedType ? normalizeText(bookTyyppi) === normalizeText(selectedType) : true) &&
-      (selectedCategory ? normalizeText(bookLuokka) === normalizeText(selectedCategory) : true)
-    );
-  });
+      return {
+        ...book,
+        relevance: nameMatches,
+        match: nameMatches > 0 && authorMatch && typeMatch && categoryMatch
+      };
+    })
+    .filter(book => book.match)
+    .sort((a, b) => b.relevance - a.relevance); // Sort by relevance descending  
 
   const handleAddToBasket = (book, e) => {
     e.stopPropagation();
