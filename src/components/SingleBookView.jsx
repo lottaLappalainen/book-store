@@ -14,6 +14,7 @@ const SingleBookView = () => {
   const book = useSelector((state) => state.books.selectedBook);
   const tyypit = useSelector((state) => state.types.types);
   const luokat = useSelector((state) => state.categories.categories);
+  const basket = useSelector((state) => state.basket);
 
   useEffect(() => {
     dispatch(fetchBookById(id));
@@ -29,16 +30,30 @@ const SingleBookView = () => {
     dispatch(setNotification({ message: `"${book.nimi}" lisättiin ostoskoriin`, requestStatus: "success" }));
   };
 
+  // Check how many copies of this book are already in the basket
+  const itemInBasket = basket.find((item) => item.id === book?.id);
+  const basketQuantity = itemInBasket?.quantity || 0;
+
+  const canAddToBasket = book?.kpl > basketQuantity;
+
   if (!book) return <p>Kirjan tietoja ladataan...</p>;
 
   return (
     <div className="single-book-container">
       <h1>{book.nimi}</h1>
       <p><strong>Tekijä:</strong> {book.tekija}</p>
-      {book.isbn && <p><strong>Isbn:</strong> {book.isbn}</p>} 
+      {book.isbn && <p><strong>Isbn:</strong> {book.isbn}</p>}
       <p><strong>Tyyppi:</strong> {bookTyyppi}</p>
       <p><strong>Luokka:</strong> {bookLuokka}</p>
-      <button onClick={handleAddToBasket}>Lisää ostoskoriin</button>
+      <p><strong>Saatavilla:</strong> {book.kpl - basketQuantity} / {book.kpl}</p>
+
+      {book.kpl > 0 && canAddToBasket ? (
+        <button onClick={handleAddToBasket}>Lisää ostoskoriin</button>
+      ) : (
+        <button disabled style={{ opacity: 0.5 }}>
+          {book.kpl === 0 ? "Ei saatavilla" : "Maksimi lisätty"}
+        </button>
+      )}
     </div>
   );
 };
