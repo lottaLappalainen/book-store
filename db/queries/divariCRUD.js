@@ -1,4 +1,4 @@
-import { missingParams, invalidId } from '../../utils/validationMessages';
+import { missingParams, invalidId } from '../../utils/validationMessages.js';
 
 export const createDivari = (nimi, osoite, omaTietokanta) => {
     if (!nimi || !osoite) throw new Error(missingParams);

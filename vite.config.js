@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // https://vite.dev/config/
+
 export default defineConfig({
   server: {
     host: '192.168.4.115',

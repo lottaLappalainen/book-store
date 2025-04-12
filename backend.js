@@ -40,6 +40,8 @@ import { setupUserRoutes } from './db/routes/userRoutes.js';
 setupUserRoutes(backend);
 import { setupTeosRoutes } from './db/routes/teosRoutes.js';
 setupTeosRoutes(backend);
+import { setupTilausRoutes } from './db/routes/tilausRoutes.js';
+setupTilausRoutes(backend);
 
 import { setupUtils } from './db/routes/utilRoutes.js';
 setupUtils(backend);
