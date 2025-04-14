@@ -42,7 +42,7 @@ const orderSplitter = (items, maxWeight) => {
             currOrderWeight = 0;
         };
     };
-
+    console.log("asd",orders)
     return orders;
 };
 
@@ -69,49 +69,7 @@ export const getPostikulutaulukkoValues = async () => {
 };
 
 
-/*export const initializeOrder = async (items) => {
-
-    const bodyJSON = JSON.stringify(items);
-    
-    try {
-        const response = await fetch(`${API_URL}/tilaa`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: bodyJSON,
-        });
-
-        if (!response.ok) {
-            throw new Error('Virhe tilausta tehdessä');
-        }
-        const order = await response.json();
-        await getPostikulutaulukkoValues()
-        .then((postages) => {
-            const max = postages.reduce(
-                (max, item) => (item.max_paino > max.max_paino ? item : max), postages[0]
-            );
-            const tempOrders = orderSplitter(items, max.max_paino);
-            let tempPostage = 0;
-            tempOrders.forEach((item, index) => {
-                if (index === tempOrders.length - 1) item.postikulut = findClosestHintaByPaino(postages, item.paino);
-                else item.postikulut = max.hinta;
-
-                tempPostage += parseFloat(item.postikulut);
-            });
-            const output = {
-                ...order,
-                postage: tempPostage,
-                shipmentCount: tempOrders.length,
-            };
-            return JSON.stringify(output);
-        });
-    } catch (error) {
-        console.log("Virhe tilausta tehdessä", error);
-        throw error;
-    }
-};*/
-
+//Varaa niteet ja aloita tilaus
 export const initializeOrder = async (items) => {
     const bodyJSON = JSON.stringify(items);
 
@@ -138,8 +96,10 @@ export const initializeOrder = async (items) => {
 
         const tempOrders = orderSplitter(items, max.max_paino);
         let tempPostage = 0;
+        
 
         tempOrders.forEach((item, index) => {
+            
             if (index === tempOrders.length - 1) {
                 item.postikulut = findClosestHintaByPaino(postages, item.paino);
             } else {
@@ -153,6 +113,7 @@ export const initializeOrder = async (items) => {
             ...order,
             postage: tempPostage,
             shipmentCount: tempOrders.length,
+            shipments: tempOrders,
         };
 
         return output; 
@@ -160,4 +121,42 @@ export const initializeOrder = async (items) => {
         console.log("Virhe tilausta tehdessä", error);
         throw error;
     }
+};
+
+export const confirmOrder = async (order) => {
+
+   const tempShipments = [];
+
+   order.shipments.forEach((item) => {
+    tempShipments.push({
+        items: item,
+        postikulut: item.postikulut,
+    });
+   });
+
+    
+    const requestBody = JSON.stringify({
+        id: order.id,
+        niteet: order.niteet,
+        shipments: tempShipments,
+    });
+
+    try {
+        //päivitä keskusdivarin kantaan
+        const response = await fetch(`${API_URL}/vahvista`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: requestBody,
+        });
+        if (!response.ok) throw new Error('Virhe vahvistettaessa tilausta');
+
+        res.status(201).json(response.rows[0].id);
+
+
+    } catch (error) {
+        console.log("Virhe vahvistettaessa tilausta", error);
+        throw error;
+    };
 };
