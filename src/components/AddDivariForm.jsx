@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { processXmlAndAddDivari } from '../actions/divariActions';
@@ -130,7 +131,6 @@ const AddDivariForm = () => {
                         </div>
                     )}
             </form>
-
         </div>
     );
 };
