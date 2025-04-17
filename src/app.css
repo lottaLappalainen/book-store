@@ -165,3 +165,56 @@ button.button-small {
     padding-top: var(--header-height);
     background-color: var(--color-white);
 }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Stack inputs vertically */
+    row-gap: var(--space-m);    /* Space between rows */
+    margin: 0 auto;             /* Center the form horizontally */
+    max-width: 400px;           /* Limit width for a cleaner look */
+    background-color: var(--color-white);
+    padding: var(--space-l);
+    border-radius: 8px;
+    box-shadow: var(--shadow-base);
+}
+
+.form-grid input,
+.form-grid button {
+    max-width: 100%; /* Prevent inputs from being too wide */
+    padding: 0.75rem; /* Add padding for better usability */
+    font-size: var(--font-size-m); /* Use a consistent font size */
+    border: 1px solid #ccc; /* Add a border for better visibility */
+    border-radius: 4px; /* Add rounded corners */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.form-grid button {
+    background-color: var(--color-primary);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-grid button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.xml-input {
+    margin-top: 2rem;
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    gap: 1rem;
+}
+
+.form-input {
+    width: 100%;
+    max-width: 250px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+    display: flex;
+}
