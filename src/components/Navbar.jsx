@@ -17,9 +17,7 @@ function Navbar({ role }) {
           {(role === "yllapitaja") && <li><Link to="/addbook">Lisää kirja</Link></li>}
           {(role === "yllapitaja") && <li><Link to="/adddivari">Lisää divari</Link></li>}
           {role === "yllapitaja" && <button className="button-secondary button-small" onClick={() => dispatch(syncDivaris())}>Synkkaa divarit</button>}
-
         </ul>
-        {role === "yllapitaja" && <button onClick={() => dispatch(syncDivaris())}>Synkkaa divarit</button>}
         <button className="button-secondary button-small" onClick={() => dispatch(logout())}>Kirjaudu ulos</button>
       </nav>
     </div>
