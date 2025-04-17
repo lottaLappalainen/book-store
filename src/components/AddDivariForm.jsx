@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { processXmlAndAddDivari } from '../actions/divariActions';
 
@@ -11,6 +12,7 @@ const AddDivariForm = () => {
 
     const [xmlFile, setXmlFile] = useState(null);
     const [divariInfo, setDivariInfo] = useState({ nimi: '', osoite: '' });
+    const fileInputRef = useRef(null);
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
@@ -44,17 +46,20 @@ const AddDivariForm = () => {
             return;
         }
 
-        dispatch(processXmlAndAddDivari(xmlFile, divariInfo));
-
         // Reset fields after dispatching the action
         setXmlFile(null);
         setDivariInfo({ nimi: '', osoite: '' });
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+        dispatch(processXmlAndAddDivari(xmlFile, divariInfo));
+
     };
 
     return (
-        <div className="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Lisää uusi divari</h2>
-            <form onSubmit={(e) => e.preventDefault()}>
+        <div>
+            <form onSubmit={(e) => e.preventDefault()} className="form-grid">
+                <h2 className="text-2xl font-bold mb-4">Lisää uusi divari</h2>
                 <input
                     name="nimi"
                     value={formData.nimi}
@@ -86,47 +91,46 @@ const AddDivariForm = () => {
                 >
                     Lisää divari
                 </button>
+                    <label className="block font-bold text-center text-lg">
+                        Tai, lisää divari XML-tiedostosta: </label>
+                    <input
+                        type="file"
+                        accept=".xml"
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                        className="w-full p-2 border rounded"
+                    />
+                    {xmlFile && (
+                        <div className="xml-input-container">
+                            <input
+                                type="text"
+                                name="nimi"
+                                value={divariInfo.nimi}
+                                onChange={handleDivariInfoChange}
+                                placeholder="Divarin nimi"
+                            />
+                            <input
+                                type="text"
+                                name="osoite"
+                                value={divariInfo.osoite}
+                                onChange={handleDivariInfoChange}
+                                placeholder="Divarin osoite"
+                            />
+                            <div>
+                            <button
+                                onClick={handleProcessXML}
+                                className={`w-full py-2 px-4 rounded ${
+                                    divariInfo.nimi && divariInfo.osoite
+                                        ? 'bg-green-500 hover:bg-green-600 text-white'
+                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                }`}
+                                disabled={!divariInfo.nimi || !divariInfo.osoite}
+                            >
+                                Käsittele XML
+                            </button></div>
+                        </div>
+                    )}
             </form>
-            <div className="mt-4">
-                <label className="block mb-2 font-bold">Lisää divari XML-tiedostosta:</label>
-                <input
-                    type="file"
-                    accept=".xml"
-                    onChange={handleFileChange}
-                    className="w-full p-2 border rounded"
-                />
-                {xmlFile && (
-                    <div className="mt-4">
-                        <input
-                            type="text"
-                            name="nimi"
-                            value={divariInfo.nimi}
-                            onChange={handleDivariInfoChange}
-                            placeholder="Divarin nimi"
-                            className="w-full p-2 border rounded mb-2"
-                        />
-                        <input
-                            type="text"
-                            name="osoite"
-                            value={divariInfo.osoite}
-                            onChange={handleDivariInfoChange}
-                            placeholder="Divarin osoite"
-                            className="w-full p-2 border rounded mb-2"
-                        />
-                        <button
-                            onClick={handleProcessXML}
-                            className={`w-full py-2 px-4 rounded mt-2 ${
-                                divariInfo.nimi && divariInfo.osoite
-                                    ? 'bg-green-500 hover:bg-green-600 text-white'
-                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                            }`}
-                            disabled={!divariInfo.nimi || !divariInfo.osoite}
-                        >
-                            Käsittele XML
-                        </button>
-                    </div>
-                )}
-            </div>
         </div>
     );
 };

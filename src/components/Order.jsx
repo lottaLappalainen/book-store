@@ -47,7 +47,7 @@ const Order = () => {
             }
         }
         getPostikulutaulukko();
-        
+
     }, []);
 
 
@@ -65,13 +65,13 @@ const Order = () => {
    /*
     function findClosestHintaByPaino(arr, target) {
         if (!arr.length) return null;
-      
+
         const closestItem = arr.reduce((closest, item) => {
           const currDiff = Math.abs(item.max_paino - target);
           const closestDiff = Math.abs(closest.max_paino - target);
           return currDiff < closestDiff ? item : closest;
         });
-      
+
         return closestItem.hinta;
     }
 
@@ -102,7 +102,7 @@ const Order = () => {
     }, [postikulutaulukko]);
    */
 
-    
+
 
     const handleUseEmail = () => {
         setOrder({
@@ -128,7 +128,7 @@ const Order = () => {
     return (
         <div className="summary-card">
             <h4>Tilaustiedot</h4>
-            <form>
+            <form className="form-grid">
                 <section>
                     <h5>Tilaaja</h5>
                     <div className="summary-row">
@@ -139,7 +139,7 @@ const Order = () => {
                     </div>
                     <div className="summary-row">
                     <label htmlFor="input_phone">Puhelinnumero</label>
-                    
+
                     {order.usePhone ? (
                             <input
                                 id="input-phone"
@@ -149,28 +149,28 @@ const Order = () => {
                                 required={order.usePhone}
                                 onChange={handleChangePhone}
                             />
-                        ) : 
-                        (   
+                        ) :
+                        (
                             <div>{user.phone}</div>
-                        ) 
+                        )
                     }
                     </div>
-                   
+
                     <div className="summary-row">
                         <div>Postiosoite</div>
                         <div>{user.address}</div>
-                    </div>   
+                    </div>
                 </section>
                 <section>
                     <h5>Tilaus</h5>
-                    
-                
+
+
 
                     <div className="summary-row">
                         <div>Hinta</div>
                         <div>{order.price}</div>
                     </div>
-                    
+
                     <div className="summary-row">
                         <div>Postikulut</div>
                         <div>{order.postage}</div>
@@ -181,10 +181,10 @@ const Order = () => {
                 </section>
                 <button className="button-primary">Vahvista tilaus</button>
             </form>
-            
-           
-            
-            
+
+
+
+
         </div>
     );
 
