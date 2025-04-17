@@ -6,6 +6,7 @@ import Books from './components/Books';
 import SingleBookView from './components/SingleBookView';
 import Basket from './components/Basket';
 import AddBookForm from './components/AddBookForm';
+import AddDivariForm from './components/AddDivariForm';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -39,6 +40,7 @@ function App() {
             <Route path="/search" element={<Search role={role}/>} />
             <Route path="/basket" element={<Basket />} />
             <Route path="/addbook" element={<AddBookForm />} />
+            <Route path="/adddivari" element={<AddDivariForm />} />
             <Route path='/order' element={<Order/>}/>
             <Route path="*" element={<Navigate to="/books" />} />
           </>
