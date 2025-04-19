@@ -12,7 +12,8 @@ export const pool = new Pool({
     host: process.env.HOST,
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
-    port: process.env.PORT
+    port: process.env.PORT,
+    max: 20
 });
 
 pool.connect()
@@ -42,6 +43,10 @@ import { setupTeosRoutes } from './db/routes/teosRoutes.js';
 setupTeosRoutes(backend);
 import { setupTilausRoutes } from './db/routes/tilausRoutes.js';
 setupTilausRoutes(backend);
+import { setupDivariRoutes } from './db/routes/divariRoutes.js';
+setupDivariRoutes(backend);
+import { setupXmlRoutes } from './db/routes/xmlRoutes.js';
+setupXmlRoutes(backend);
 
 import { setupUtils } from './db/routes/utilRoutes.js';
 setupUtils(backend);

@@ -76,7 +76,6 @@ CREATE TABLE keskusdivari.Nide (
     myyntipvm DATE,
     tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty')),
     tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL
-    -- Removed: CONSTRAINT unique_teosid_divariid UNIQUE (teosId, divariId)
 );
 
 CREATE TABLE keskusdivari.Postikulutaulukko (
@@ -142,13 +141,7 @@ BEGIN
             NEW.myyntipvm,
             NEW.tila,
             NULL
-        )
-        ON CONFLICT (id) 
-        DO UPDATE SET
-            ostohinta = EXCLUDED.ostohinta,
-            myyntipvm = EXCLUDED.myyntipvm,
-            tila = EXCLUDED.tila,
-            tilausId = EXCLUDED.tilausId;
+        );
     END;
     
     RETURN NEW;

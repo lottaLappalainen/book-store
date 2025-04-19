@@ -52,3 +52,60 @@ export const deleteDivari = (id) => {
         values: [id],
     };
 };
+
+/* --------------------------- Create DivariInfo --------------------------- */
+export const createDivariInfo = (nimi, osoite) => {
+    if (!nimi || !osoite) throw new Error(missingParams);
+    return {
+        text: `
+            INSERT INTO divari.DivariInfo (nimi, osoite)
+            VALUES ($1, $2)
+            RETURNING *;
+        `,
+        values: [nimi, osoite],
+    };
+};
+
+/* ---------------------------- Get DivariInfo ----------------------------- */
+export const getDivariInfo = (id) => {
+    if (!id || isNaN(id)) throw new Error(invalidId);
+    return {
+        text: `
+            SELECT * FROM divari.DivariInfo WHERE id = $1;
+        `,
+        values: [id],
+    };
+};
+
+/* -------------------------- Get All DivariInfo --------------------------- */
+export const getAllDivariInfo = () => {
+    return { text: `SELECT * FROM divari.DivariInfo`, };
+};
+
+/* --------------------------- Update DivariInfo --------------------------- */
+export const updateDivariInfo = (id, nimi, osoite) => {
+    if (!id || isNaN(id)) throw new Error(invalidId);
+    return {
+        text: `
+            UPDATE divari.DivariInfo
+            SET nimi = COALESCE($1, nimi),
+                osoite = COALESCE($2, osoite)
+            WHERE id = $3
+            RETURNING *;
+        `,
+        values: [nimi, osoite, id],
+    };
+};
+
+/* --------------------------- Delete DivariInfo --------------------------- */
+export const deleteDivariInfo = (id) => {
+    if (!id || isNaN(id)) throw new Error(invalidId);
+    return {
+        text: `
+            DELETE FROM divari.DivariInfo
+            WHERE id = $1
+            RETURNING *;
+        `,
+        values: [id],
+    };
+};

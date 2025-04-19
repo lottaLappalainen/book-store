@@ -96,31 +96,51 @@ const Search = ({role}) => {
       <h1>Hae tuotteita</h1>
 
       <div className="search-fields">
-        <input type="text" placeholder="Kirjan nimi" value={nimi} onChange={(e) => setNimi(e.target.value)} />
-        <input type="text" placeholder="Tekijä" value={tekijä} onChange={(e) => setTekijä(e.target.value)} />
+          <input
+              type="text"
+              placeholder="Kirjan nimi"
+              value={nimi}
+              onChange={(e) => setNimi(e.target.value)}
+              className="form-input"
+          />
+          <input
+              type="text"
+              placeholder="Tekijä"
+              value={tekijä}
+              onChange={(e) => setTekijä(e.target.value)}
+              className="form-input"
+          />
 
-        <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
-          <option value="">Valitse tyyppi</option>
-          {tyypit.map((tyyppi) => (
-            <option key={tyyppi.id} value={tyyppi.nimi}>
-              {tyyppi.nimi}
-            </option>
-          ))}
-        </select>
+          <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="form-input"
+          >
+              <option value="">Valitse tyyppi</option>
+              {tyypit.map((tyyppi) => (
+                  <option key={tyyppi.id} value={tyyppi.nimi}>
+                      {tyyppi.nimi}
+                  </option>
+              ))}
+          </select>
 
-        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-          <option value="">Valitse luokka</option>
-          {luokat.map((luokka) => (
-            <option key={luokka.id} value={luokka.nimi}>
-              {luokka.nimi}
-            </option>
-          ))}
-        </select>
+          <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="form-input"
+          >
+              <option value="">Valitse luokka</option>
+              {luokat.map((luokka) => (
+                  <option key={luokka.id} value={luokka.nimi}>
+                      {luokka.nimi}
+                  </option>
+              ))}
+          </select>
       </div>
 
       {role === "yllapitaja" && <div className="price-summary">
-        <p><strong>Kokonaishinta:</strong> {totalPrice}</p>
-        <p><strong>Keskihinta:</strong> {avgPrice}</p>
+        <p><strong>Kokonaishinta:</strong> {totalPrice}€</p>
+        <p><strong>Keskihinta:</strong> {avgPrice}€</p>
       </div>}
 
       <div className="books-grid">
