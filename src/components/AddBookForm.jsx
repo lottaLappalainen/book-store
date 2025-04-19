@@ -77,7 +77,6 @@ const AddBookForm = () => {
 
     return (
         <div className="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
-
             <form onSubmit={handleSubmit} className="form-grid">
                 <h2 className="text-2xl font-bold mb-4">{isNewBook ? "Lisää uusi kirja" : "Lisää olemassa oleva kirja"}</h2>
                 <div className="mb-4">
@@ -91,6 +90,21 @@ const AddBookForm = () => {
                         <input name="tekija" value={formData.tekija} onChange={handleChange} required placeholder="Kirjailija" className="w-full p-2 border rounded mb-2" />
                         <input name="hinta" value={formData.hinta} onChange={handleChange} required placeholder="Hinta (€)" className="w-full p-2 border rounded mb-2" />
                         <input name="julkaisuvuosi" value={formData.julkaisuvuosi} onChange={handleChange} required placeholder="Julkaisuvuosi" className="w-full p-2 border rounded mb-2" />
+                        <input name="paino" value={formData.paino} onChange={handleChange} required placeholder="Paino (g)" className="w-full p-2 border rounded mb-2" />
+
+                        <select name="tyyppiId" value={formData.tyyppiId} onChange={handleChange} className="w-full p-2 border rounded mb-2">
+                            <option value="">Valitse tyyppi</option>
+                            {tyypit.map((tyyppi) => (
+                                <option key={tyyppi.id} value={tyyppi.id}>{tyyppi.nimi}</option>
+                            ))}
+                        </select>
+
+                        <select name="luokkaId" value={formData.luokkaId} onChange={handleChange} className="w-full p-2 border rounded mb-2">
+                            <option value="">Valitse luokka</option>
+                            {luokat.map((luokka) => (
+                                <option key={luokka.id} value={luokka.id}>{luokka.nimi}</option>
+                            ))}
+                        </select>
                     </>
                 ) : (
                     <>
