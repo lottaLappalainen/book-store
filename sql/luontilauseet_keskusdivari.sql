@@ -75,10 +75,9 @@ CREATE TABLE keskusdivari.Nide (
     ostohinta NUMERIC(10,2),
     myyntipvm DATE,
     tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty')),
-    tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL,
-    CONSTRAINT unique_teosid_divariid UNIQUE (teosId, divariId) 
+    tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL
+    -- Removed: CONSTRAINT unique_teosid_divariid UNIQUE (teosId, divariId)
 );
-
 
 CREATE TABLE keskusdivari.Postikulutaulukko (
     id SERIAL PRIMARY KEY, 
@@ -115,7 +114,7 @@ BEGIN
             LIMIT 1;
         END IF;
 
-        -- Don't do anything if teos not found in keskusdivari (so that it doesn't overlap with t7)
+        -- Don't do anything if teos not found in keskusdivari
         IF (keskus_teos_id IS NULL) THEN
             RETURN NULL;
         END IF;
@@ -161,4 +160,3 @@ CREATE TRIGGER sync_nide_after_insert_update
 AFTER INSERT OR UPDATE ON divari.Nide
 FOR EACH ROW
 EXECUTE FUNCTION divari.sync_nide_to_keskusdivari();
--- end tapahtuma 6 --

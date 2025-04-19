@@ -55,7 +55,6 @@ const Search = ({role}) => {
       const authorMatch = tekijä ? bookTekija.includes(normalizeText(tekijä)) : true;
       const typeMatch = selectedType ? normalizeText(bookTyyppi) === normalizeText(selectedType) : true;
       const categoryMatch = selectedCategory ? normalizeText(bookLuokka) === normalizeText(selectedCategory) : true;
-      console.log("Testing:", bookNimi, "=>", normalizeText(nimi).split(" "), "score:", getRelevanceScore(bookNimi, normalizeText(nimi).split(" ")));
 
       return {
         ...book,
