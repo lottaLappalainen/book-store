@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../actions/userActions';
+import '../styles/Starterpage.css';
 
 function Login() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="starter-page">
       <form onSubmit={handleLogin} className="form-grid">
         <h2>Kirjautuminen</h2>
         <input type="email" placeholder="Sähköposti" value={email} onChange={(e) => setEmail(e.target.value)} required />

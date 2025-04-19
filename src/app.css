@@ -163,7 +163,6 @@ button.button-small {
 
 .main-content {
     padding-top: var(--header-height);
-    background-color: var(--color-white);
 }
 
 .form-grid {

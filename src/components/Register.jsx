@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../actions/userActions';
+import '../styles/Starterpage.css';
 
 function Register() {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="starter-page">
       <form onSubmit={handleRegister} className="form-grid">
         <h2>Luo tili</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
