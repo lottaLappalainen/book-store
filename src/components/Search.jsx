@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addToBasket } from "../actions/basketActions";
-import { setNotification } from "../actions/notificationActions";
 import { fetchTypes } from "../actions/typesActions";
 import { fetchCategories } from "../actions/categoriesActions";
 import "../styles/Books.css";
+import "../styles/Search.css";
 
 const Search = ({role}) => {
   const [nimi, setNimi] = useState("");
@@ -59,17 +58,16 @@ const Search = ({role}) => {
       return {
         ...book,
         relevance: nameMatches,
-        match: nameMatches > 0 && authorMatch && typeMatch && categoryMatch
+        match:
+        (!nimi || nameMatches > 0) &&
+        (!tekijä || authorMatch) &&
+        (!selectedType || typeMatch) &&
+        (!selectedCategory || categoryMatch)
       };
     })
     .filter(book => book.match)
     .sort((a, b) => b.relevance - a.relevance); // Sort by relevance descending  
 
-  const handleAddToBasket = (book, e) => {
-    e.stopPropagation();
-    dispatch(addToBasket(book));
-    dispatch(setNotification({ message: `"${book.nimi}" lisättiin ostoskoriin`, requestStatus: "success" }));
-  };
 
   const calculatePrices = () => {
     const booksToCalculate = selectedCategory
@@ -138,10 +136,12 @@ const Search = ({role}) => {
           </select>
       </div>
 
-      {role === "yllapitaja" && <div className="price-summary">
-        <p><strong>Kokonaishinta:</strong> {totalPrice}€</p>
-        <p><strong>Keskihinta:</strong> {avgPrice}€</p>
-      </div>}
+      {selectedCategory && !nimi && !tekijä && !selectedType && (
+        <div className="price-summary">
+          <p><strong>Kokonaishinta:</strong> {totalPrice}€</p>
+          <p><strong>Keskihinta:</strong> {avgPrice}€</p>
+        </div>
+      )}
 
       <div className="books-grid">
         {filteredBooks.length > 0 ? (
@@ -149,7 +149,6 @@ const Search = ({role}) => {
             <div key={book.id} className="book-card" onClick={() => navigate(`/books/${book.id}`)}>
               <h2>{book.nimi}</h2>
               <p><strong>Tekijä:</strong> {book.tekija}</p>
-              <button onClick={(e) => handleAddToBasket(book, e)}>Lisää ostoskoriin</button>
             </div>
           ))
         ) : (
