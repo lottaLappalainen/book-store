@@ -26,7 +26,7 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="starter-page">
       <form onSubmit={handleRegister} className="form-grid">
         <h2>Luo tili</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}

@@ -22,4 +22,26 @@ export const setupUtils = (backend) => {
         res.status(400).json({ error: error.message });
       };
     });
+
+    /* --------------------------- Get Unique "Tyypit" -------------------------- */
+    backend.get('/api/tyypit', async (req, res) => {
+      try {
+          const queryData = q.getTyypit();
+          const result = await pool.query(queryData.text);
+          res.status(200).json(result.rows);
+      } catch (error) {
+          res.status(400).json({ error: error.message });
+      }
+  });
+
+    /* --------------------------- Get Unique "Luokat" -------------------------- */
+    backend.get('/api/luokat', async (req, res) => {
+        try {
+            const queryData = q.getLuokat();
+            const result = await pool.query(queryData.text);
+            res.status(200).json(result.rows);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    });
 };

@@ -1,4 +1,27 @@
 
+.order-container {
+    display: flex;
+    justify-content: center; /* center the whole block */
+    padding: var(--space-l);
+  }
+  
+  .order-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* align content (h1 + buttons) to the left */
+    max-width: 800px;
+    width: 100%;
+  }
+  
+  .button-row {
+    display: flex;
+    gap: var(--space-m);
+    margin-top: var(--space-l);
+  }  
+
+.basket-container {
+    background-color: var(--color-white);
+}
 button.action-button {
     aspect-ratio: 1/1;
     border-radius: var(--border-radius-circle);
@@ -10,7 +33,6 @@ button.action-button {
 }
 
 div.summary-card {
-    background-color: var(--color-primary-light);
     padding: var(--space-m);
     border-radius: var(--border-radius-soft);
     max-width: 800px;
@@ -70,3 +92,6 @@ div.book-row {
     justify-content: space-between;
     
 }
+
+
+  

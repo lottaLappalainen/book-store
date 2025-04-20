@@ -29,9 +29,6 @@ const Books = () => {
             <div key={book.id} className="book-card" onClick={() => navigate(`/books/${book.id}`)}>
               <h2>{book.nimi}</h2>
               <p><strong>Tekijä:</strong> {book.tekija}</p>
-              <button className='button-secondary' onClick={(e) => { e.stopPropagation(); handleAddToBasket(book); }}>
-                Lisää ostoskoriin
-              </button>
             </div>
           ))
         ) : (

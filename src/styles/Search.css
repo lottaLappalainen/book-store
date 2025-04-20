@@ -1,0 +1,26 @@
+.search-container {
+    text-align: center;
+    padding: var(--space-xl);
+  }
+  
+  .search-container h1 {
+    margin-bottom: var(--space-l);
+  }
+  
+  .search-fields {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-m);
+    margin-bottom: var(--space-xl);
+  }
+  
+  .search-fields .form-input {
+    margin-bottom: 0; /* remove vertical stacking margin */
+  }
+  
+  .price-summary {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-m);
+  }

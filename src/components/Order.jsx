@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { calculateBasketPriceSum } from "../actions/basketActions";
-import '../styles/order.css';
+import '../styles/Order.css';
 import { getPostikulutaulukkoValues } from "../actions/orderActions";
 import orderSplitter from "../actions/orderSplitter";
 import { useLocation } from "react-router-dom";

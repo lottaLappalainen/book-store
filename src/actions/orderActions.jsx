@@ -1,4 +1,5 @@
 import { API_URL } from "../utils/consts";
+import { setNotification } from '../actions/notificationActions';
 
 const orderSplitter = (items, maxWeight) => {
     //laske tilauksen kok.paino
@@ -112,7 +113,8 @@ export const getPostikulutaulukkoValues = async () => {
     }
 };*/
 
-export const initializeOrder = async (items) => {
+export const initializeOrder = async (items, dispatch) => {
+    dispatch(setNotification({ message: 'Tehdään tilausta...', requestStatus: 'loading' }));
     const bodyJSON = JSON.stringify(items);
 
     try {
@@ -125,6 +127,7 @@ export const initializeOrder = async (items) => {
         });
 
         if (!response.ok) {
+            dispatch(setNotification({ message: 'Virhe tilausta tehdessä', requestStatus: 'error' }));
             throw new Error('Virhe tilausta tehdessä');
         }
 
@@ -154,9 +157,10 @@ export const initializeOrder = async (items) => {
             postage: tempPostage,
             shipmentCount: tempOrders.length,
         };
-
+        dispatch(setNotification({ message: 'Tilaus tehty onnistuneesti', requestStatus: 'success' }));
         return output; 
     } catch (error) {
+        dispatch(setNotification({ message: 'Virhe tilausta tehdessä', requestStatus: 'error' }));
         console.log("Virhe tilausta tehdessä", error);
         throw error;
     }

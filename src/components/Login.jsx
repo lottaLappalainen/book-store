@@ -17,7 +17,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="starter-page">
       <form onSubmit={handleLogin} className="form-grid">
         <h2>Kirjautuminen</h2>
         <input type="email" placeholder="Sähköposti" value={email} onChange={(e) => setEmail(e.target.value)} required />

@@ -39,3 +39,18 @@
     font-weight: var(--font-weight-semi-bold);
 }
 
+.nav-links li a:hover {
+    color: var(--color-secondary);
+    border-bottom: 2px solid var(--color-secondary); 
+
+}
+
+.nav-links li a.active {
+    color: var(--color-secondary);
+    border-bottom: 2px solid var(--color-secondary); 
+    font-weight: var(--font-weight-bold);
+}
+
+.button:hover {
+    background-color: var(--color-primary-dark); /* optional */
+  }

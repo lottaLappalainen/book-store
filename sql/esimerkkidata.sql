@@ -125,3 +125,80 @@ VALUES ('Teos'), ('Nide');
 -- 
 -- INSERT INTO divari.Nide (teosId, ostohinta, myyntipvm, tila)
 -- VALUES ((SELECT id FROM divari.Teos WHERE isbn='9876543210'), 5.99, '2021-01-01', 'vapaa');
+
+-- UUSIA TEOKSIA TESTAUKSEEN JA NITEITÄ
+
+-- Keskusdivari: Lisää kirjoja
+INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId)
+VALUES 
+    ('1111111111', 'Kissan elämä ja kuolema', 'Taru Tietäväinen', 6.99, 2000, 300, 
+        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'romaani'),
+        (SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'seikkailu')),
+    ('2222222222', 'Elämä kuoleman jälkeen', 'Veikko Viisas', 8.99, 2010, 400,
+        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'tietokirja'),
+        (SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'historia')),
+    ('3333333333', 'Kuoleman kosketus', 'Musta Varjo', 10.50, 2005, 600,
+        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'romaani'),
+        (SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'dekkari')),
+    ('4444444444', 'Elämä kissan kanssa', 'Lilli Leikkonen', 5.50, 2015, 250,
+        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'kuvakirja'),
+        (SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'huumori')),
+    ('5555555555', 'Kissat ja kuolemat', 'Riku Riipinen', 7.25, 2018, 320,
+        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'sarjakuva'),
+        (SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'sikailu'))
+ON CONFLICT DO NOTHING;
+
+-- Lisää niteitä — useampi per kirja
+INSERT INTO keskusdivari.Nide (teosId, divariId, ostohinta, myyntipvm, tila, tilausid)
+VALUES 
+    -- Kissan elämä ja kuolema
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='1111111111'), 1, 3.99, NULL, 'vapaa', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='1111111111'), 2, 4.25, NULL, 'vapaa', NULL),
+
+    -- Elämä kuoleman jälkeen
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='2222222222'), 1, 4.50, NULL, 'vapaa', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='2222222222'), 2, 4.75, NULL, 'vapaa', NULL),
+
+    -- Kuoleman kosketus
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='3333333333'), 2, 5.99, '2023-12-01', 'myyty', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='3333333333'), 1, 5.50, NULL, 'vapaa', NULL),
+
+    -- Elämä kissan kanssa
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='4444444444'), 1, 2.99, NULL, 'vapaa', NULL),
+
+    -- Kissat ja kuolemat
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='5555555555'), 2, 3.75, '2022-08-12', 'myyty', NULL),
+    ((SELECT id FROM keskusdivari.Teos WHERE isbn='5555555555'), 1, 3.25, NULL, 'vapaa', NULL)
+ON CONFLICT DO NOTHING;
+
+-- Sama divari skeemaan
+INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
+VALUES 
+    ('1111111111', 'Kissan elämä ja kuolema', 'Taru Tietäväinen', 6.99, 2000, 300, 
+        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'romaani'),
+        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'seikkailu'), 1),
+    ('2222222222', 'Elämä kuoleman jälkeen', 'Veikko Viisas', 8.99, 2010, 400,
+        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'tietokirja'),
+        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'historia'), 1),
+    ('3333333333', 'Kuoleman kosketus', 'Musta Varjo', 10.50, 2005, 600,
+        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'romaani'),
+        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'dekkari'), 1),
+    ('4444444444', 'Elämä kissan kanssa', 'Lilli Leikkonen', 5.50, 2015, 250,
+        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'kuvakirja'),
+        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'huumori'), 1),
+    ('5555555555', 'Kissat ja kuolemat', 'Riku Riipinen', 7.25, 2018, 320,
+        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'sarjakuva'),
+        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'sikailu'), 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO divari.Nide (teosId, ostohinta, myyntipvm, tila)
+VALUES 
+    ((SELECT id FROM divari.Teos WHERE isbn='1111111111'), 3.99, NULL, 'vapaa'),
+    ((SELECT id FROM divari.Teos WHERE isbn='2222222222'), 4.25, NULL, 'vapaa'),
+    ((SELECT id FROM divari.Teos WHERE isbn='3333333333'), 5.99, '2023-12-01', 'myyty'),
+    ((SELECT id FROM divari.Teos WHERE isbn='3333333333'), 5.50, NULL, 'vapaa'),
+    ((SELECT id FROM divari.Teos WHERE isbn='4444444444'), 2.99, NULL, 'vapaa'),
+    ((SELECT id FROM divari.Teos WHERE isbn='5555555555'), 3.75, '2022-08-12', 'myyty'),
+    ((SELECT id FROM divari.Teos WHERE isbn='5555555555'), 3.25, NULL, 'vapaa');
+
+-- END LISÄYKSET

@@ -8,7 +8,7 @@ dotenv.config();
 
 export default defineConfig({
   server: {
-    host: '192.168.4.115',
+    host: true,
     port: process.env.FRONTEND_PORT,
     allowedHosts: ['tie-tkannat.it.tuni.fi'],
   },

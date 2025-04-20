@@ -74,6 +74,9 @@
 /*Layout*/
 body {
     font-family: 'Montserrat', sans-serif;
+    background-image: url('./assets/background.jpg');
+    background-size: cover; 
+      
 }
 
 h1 {
@@ -114,13 +117,37 @@ button.button-primary-light {
     color: var(--color-primary);
 }
 
+button.button-primary-light:hover {
+    background-color: var(--color-gray);
+    color: var(--color-primary);
+}
+
 button.button-secondary {
     background-color: var(--color-secondary);
     color: var(--color-white);
     border-color: var(--color-secondary);
 }
+
+button.button-secondary:hover {
+    background-color: var(--color-secondary-dark);
+    border-color: var(--color-secondary-dark);
+}
+
+button.button-secondary.action-button:disabled {
+    background-color: var(--color-gray-light);
+    color: var(--color-gray-dark);
+    border: 1px solid var(--color-gray);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }   
+
 button.button-secondary-light {
     background-color: var(--color-white);
+    color: var(--color-secondary)
+}
+
+button.button-secondary-light:hover {
+    background-color: var(--color-gray);
     color: var(--color-secondary)
 }
 
@@ -143,10 +170,7 @@ td {
 }
 
 tr.data-row {
-    cursor: default;
-}
-tr.data-row:hover {
-    background-color: var(--color-gray-light);
+    background-color: var(--color-white);
 }
 
 tfoot th {
@@ -163,14 +187,13 @@ button.button-small {
 
 .main-content {
     padding-top: var(--header-height);
-    background-color: var(--color-white);
 }
 
 .form-grid {
     display: grid;
     grid-template-columns: 1fr; /* Stack inputs vertically */
     row-gap: var(--space-m);    /* Space between rows */
-    margin: 0 auto;             /* Center the form horizontally */
+    margin: var(--space-xl) auto;          /* More space top and bottom */
     max-width: 400px;           /* Limit width for a cleaner look */
     background-color: var(--color-white);
     padding: var(--space-l);
@@ -198,6 +221,23 @@ button.button-small {
 .form-grid button:hover {
     background-color: var(--color-primary-dark);
 }
+
+.form-grid select {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem;
+    font-size: var(--font-size-m);
+    border: 1px solid var(--color-gray);
+    color: #767676; 
+    border-radius: 4px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23AEADAC' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 0.65em auto;
+}
+
+
 
 .xml-input {
     margin-top: 2rem;

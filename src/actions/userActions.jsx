@@ -60,6 +60,7 @@ export const registerUser = (formData, navigate) => async (dispatch) => {
 
     if (!response.ok) {
       const error = await response.json();
+      dispatch(setNotification({ message: error.message || 'Rekisteröinti epäonnistui', requestStatus: 'error' }));
       throw new Error(error.message || "Rekisteröinti epäonnistui");
     }
 

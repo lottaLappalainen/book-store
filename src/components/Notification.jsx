@@ -16,7 +16,7 @@ const Notification = () => {
     }
   }, [notification]);
 
-  return isVisible ? (
+  return isVisible && notification?.message ? (
     <div className={`notification ${notification.requestStatus}`}>
       {notification.message}
     </div>
