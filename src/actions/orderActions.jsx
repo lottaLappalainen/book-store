@@ -113,7 +113,7 @@ export const getPostikulutaulukkoValues = async () => {
     }
 };*/
 
-export const initializeOrder = async (items) => {
+export const initializeOrder = async (items, dispatch) => {
     dispatch(setNotification({ message: 'Tehdään tilausta...', requestStatus: 'loading' }));
     const bodyJSON = JSON.stringify(items);
 

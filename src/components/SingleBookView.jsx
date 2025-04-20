@@ -9,7 +9,7 @@ import { fetchCategories } from "../actions/categoriesActions";
 import "../styles/Singlebook.css"; 
 import bookImage from "../assets/book.png";
 
-const SingleBookView = () => {
+const SingleBookView = ({role}) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -49,12 +49,14 @@ const SingleBookView = () => {
         <p><strong>Luokka:</strong> {bookLuokka}</p>
         <p><strong>Saatavilla:</strong> {book.kpl - basketQuantity} / {book.kpl}</p>
 
-        {book.kpl > 0 && canAddToBasket ? (
-          <button onClick={handleAddToBasket}>Lisää ostoskoriin</button>
-        ) : (
-          <button disabled>
-            {book.kpl === 0 ? "Ei saatavilla" : "Maksimi lisätty"}
-          </button>
+        {role !== "yllapitaja" && (
+          book.kpl > 0 && canAddToBasket ? (
+            <button onClick={handleAddToBasket}>Lisää ostoskoriin</button>
+          ) : (
+            <button disabled>
+              {book.kpl === 0 ? "Ei saatavilla" : "Maksimi lisätty"}
+            </button>
+          )
         )}
       </div> 
     </div>

@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { updateBasketItemQuantity } from "../../actions/basketActions";
 import { useEffect, useState } from "react";
-
+import '../../styles/Order.css';
 
 const BasketSummaryRow = ({ item, updateQuantity }) => {
     const { hinta, id, isbn, julkaisuvuosi, kpl, luokkaid, nimi, paino, quantity, tekija, tyyppiid } = item;
@@ -53,7 +53,7 @@ const BasketSummary = ({items}) => {
     };
 
     return (
-        <div style={{}}>
+        <div className="basket-container">
             {items && items.length > 0 ? (
                 <table>
                     <thead>
