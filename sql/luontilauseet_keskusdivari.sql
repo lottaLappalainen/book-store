@@ -10,7 +10,7 @@ CREATE TABLE keskusdivari.KeskusdivariInfo (
 
 CREATE TABLE keskusdivari.SyncStatus (
     id SERIAL PRIMARY KEY,
-    tauluNimi VARCHAR(50) NOT NULL,
+    tauluNimi VARCHAR(50) NOT NULL UNIQUE,
     edellinenSync TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE keskusdivari.Kayttaja (
     osoite VARCHAR(150) NOT NULL,
     sposti VARCHAR(150) UNIQUE NOT NULL,
     puh VARCHAR(50),
-    salasana VARCHAR(150) UNIQUE NOT NULL,
+    salasana VARCHAR(150) NOT NULL,
     rooli VARCHAR(10) NOT NULL CHECK (rooli IN ('yllapitaja', 'asiakas'))
 );
 
@@ -75,10 +75,8 @@ CREATE TABLE keskusdivari.Nide (
     ostohinta NUMERIC(10,2),
     myyntipvm DATE,
     tila VARCHAR(7) NOT NULL CHECK (tila IN ('vapaa', 'varattu', 'myyty')),
-    tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL,
-    CONSTRAINT unique_teosid_divariid UNIQUE (teosId, divariId) 
+    tilausId INT REFERENCES keskusdivari.Tilaus(id) ON DELETE SET NULL
 );
-
 
 CREATE TABLE keskusdivari.Postikulutaulukko (
     id SERIAL PRIMARY KEY, 
@@ -115,7 +113,7 @@ BEGIN
             LIMIT 1;
         END IF;
 
-        -- Don't do anything if teos not found in keskusdivari (so that it doesn't overlap with t7)
+        -- Don't do anything if teos not found in keskusdivari
         IF (keskus_teos_id IS NULL) THEN
             RETURN NULL;
         END IF;
@@ -143,13 +141,7 @@ BEGIN
             NEW.myyntipvm,
             NEW.tila,
             NULL
-        )
-        ON CONFLICT (id) 
-        DO UPDATE SET
-            ostohinta = EXCLUDED.ostohinta,
-            myyntipvm = EXCLUDED.myyntipvm,
-            tila = EXCLUDED.tila,
-            tilausId = EXCLUDED.tilausId;
+        );
     END;
     
     RETURN NEW;
@@ -161,4 +153,3 @@ CREATE TRIGGER sync_nide_after_insert_update
 AFTER INSERT OR UPDATE ON divari.Nide
 FOR EACH ROW
 EXECUTE FUNCTION divari.sync_nide_to_keskusdivari();
--- end tapahtuma 6 --

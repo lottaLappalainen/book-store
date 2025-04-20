@@ -1,4 +1,5 @@
 import { API_URL } from "../utils/consts";
+import { setNotification } from '../actions/notificationActions';
 
 const orderSplitter = (items, maxWeight) => {
     //laske tilauksen kok.paino
@@ -69,8 +70,51 @@ export const getPostikulutaulukkoValues = async () => {
 };
 
 
-//Varaa niteet ja aloita tilaus
-export const initializeOrder = async (items) => {
+/*export const initializeOrder = async (items) => {
+
+    const bodyJSON = JSON.stringify(items);
+    
+    try {
+        const response = await fetch(`${API_URL}/tilaa`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: bodyJSON,
+        });
+
+        if (!response.ok) {
+            throw new Error('Virhe tilausta tehdessä');
+        }
+        const order = await response.json();
+        await getPostikulutaulukkoValues()
+        .then((postages) => {
+            const max = postages.reduce(
+                (max, item) => (item.max_paino > max.max_paino ? item : max), postages[0]
+            );
+            const tempOrders = orderSplitter(items, max.max_paino);
+            let tempPostage = 0;
+            tempOrders.forEach((item, index) => {
+                if (index === tempOrders.length - 1) item.postikulut = findClosestHintaByPaino(postages, item.paino);
+                else item.postikulut = max.hinta;
+
+                tempPostage += parseFloat(item.postikulut);
+            });
+            const output = {
+                ...order,
+                postage: tempPostage,
+                shipmentCount: tempOrders.length,
+            };
+            return JSON.stringify(output);
+        });
+    } catch (error) {
+        console.log("Virhe tilausta tehdessä", error);
+        throw error;
+    }
+};*/
+
+export const initializeOrder = async (items, dispatch) => {
+    dispatch(setNotification({ message: 'Tehdään tilausta...', requestStatus: 'loading' }));
     const bodyJSON = JSON.stringify(items);
 
     try {
@@ -83,6 +127,7 @@ export const initializeOrder = async (items) => {
         });
 
         if (!response.ok) {
+            dispatch(setNotification({ message: 'Virhe tilausta tehdessä', requestStatus: 'error' }));
             throw new Error('Virhe tilausta tehdessä');
         }
 
@@ -115,9 +160,10 @@ export const initializeOrder = async (items) => {
             shipmentCount: tempOrders.length,
             shipments: tempOrders,
         };
-
+        dispatch(setNotification({ message: 'Tilaus tehty onnistuneesti', requestStatus: 'success' }));
         return output; 
     } catch (error) {
+        dispatch(setNotification({ message: 'Virhe tilausta tehdessä', requestStatus: 'error' }));
         console.log("Virhe tilausta tehdessä", error);
         throw error;
     }

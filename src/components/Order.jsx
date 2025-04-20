@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { calculateBasketPriceSum } from "../actions/basketActions";
-import '../styles/order.css';
-import { confirmOrder, getPostikulutaulukkoValues } from "../actions/orderActions";
+import '../styles/Order.css';
+import { getPostikulutaulukkoValues } from "../actions/orderActions";
+import orderSplitter from "../actions/orderSplitter";
 import { useLocation } from "react-router-dom";
 
 
@@ -28,6 +29,21 @@ const Order = () => {
         niteet: [],
     });
 
+   const [orderItems, setOrderItems] = useState();
+
+    //Hae postikulutaulukko ja laske tilauksen kok.paino
+    useEffect(() => {
+        const getPostikulutaulukko = async () => {
+            try {
+                const data = await getPostikulutaulukkoValues();
+                setPostikulutaulukko(data);
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getPostikulutaulukko();
+
+    }, []);
 
 
     useEffect(() => {
@@ -41,6 +57,62 @@ const Order = () => {
             shipments: state.order.shipments,
         });
     }, [state])
+
+   /*
+    function findClosestHintaByPaino(arr, target) {
+        if (!arr.length) return null;
+
+        const closestItem = arr.reduce((closest, item) => {
+          const currDiff = Math.abs(item.max_paino - target);
+          const closestDiff = Math.abs(closest.max_paino - target);
+          return currDiff < closestDiff ? item : closest;
+        });
+
+        return closestItem.hinta;
+    }
+
+    useEffect(() => {
+        if (postikulutaulukko) {
+            console.log(items)
+            let weight = 0;
+            items.forEach(item => {
+                weight = weight+item.paino*item.quantity;
+            });
+            setOrderWeight(weight);
+
+            const max = postikulutaulukko.reduce(
+                (max, item) => (item.max_paino > max.max_paino ? item : max), postikulutaulukko[0]
+            );
+
+            const tempOrders = orderSplitter(items, max.max_paino);
+            let tempPostage = 0;
+            tempOrders.forEach((order, index) => {
+                if (index === tempOrders.length - 1) order.postikulut = findClosestHintaByPaino(postikulutaulukko, order.paino);
+                else order.postikulut = max.hinta;
+
+                tempPostage += parseFloat(order.postikulut);
+            });
+            setOrderItems(tempOrders);
+            setOrderPostage(tempPostage);
+        }
+    }, [postikulutaulukko]);
+   */
+
+
+
+    const handleUseEmail = () => {
+        setOrder({
+            ...order,
+            useEmail: !order.useEmail,
+        });
+    };
+
+    const handleUsePhone = () => {
+        setOrder({
+            ...order,
+            usePhone: !order.usePhone,
+        });
+    };
 
     const handleChangePhone = (e) => {
         setUser({
@@ -57,7 +129,7 @@ const Order = () => {
     return (
         <div className="summary-card">
             <h4>Tilaustiedot</h4>
-            <form>
+            <form className="form-grid">
                 <section>
                     <h5>Tilaaja</h5>
                     <div className="summary-row">
@@ -68,7 +140,7 @@ const Order = () => {
                     </div>
                     <div className="summary-row">
                     <label htmlFor="input_phone">Puhelinnumero</label>
-                    
+
                     {order.usePhone ? (
                             <input
                                 id="input-phone"
@@ -78,28 +150,28 @@ const Order = () => {
                                 required={order.usePhone}
                                 onChange={handleChangePhone}
                             />
-                        ) : 
-                        (   
+                        ) :
+                        (
                             <div>{user.phone}</div>
-                        ) 
+                        )
                     }
                     </div>
-                   
+
                     <div className="summary-row">
                         <div>Postiosoite</div>
                         <div>{user.address}</div>
-                    </div>   
+                    </div>
                 </section>
                 <section>
                     <h5>Tilaus</h5>
-                    
-                
+
+
 
                     <div className="summary-row">
                         <div>Hinta</div>
                         <div>{order.price}</div>
                     </div>
-                    
+
                     <div className="summary-row">
                         <div>Postikulut</div>
                         <div>{order.postage}</div>
@@ -110,10 +182,10 @@ const Order = () => {
                 </section>
                 
             </form>
-            <button className="button-primary" onClick={handleConfirmOrder}>Vahvista tilaus</button>
-           
-            
-            
+
+
+
+
         </div>
     );
 

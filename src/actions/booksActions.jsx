@@ -74,11 +74,14 @@ export const addTeosToD2 = (teosId, divariId, ostohinta) => async (dispatch) => 
 };
 
 export const syncDivaris = () => async (dispatch) => {
+    dispatch(setNotification({ message: 'Synkataan divareita...', requestStatus: 'loading' }));
     try {
         const response = await fetch(`${API_URL}/sync`);
         const data = await response.json();
         dispatch({ type: SYNC_DIVARIT, payload: data });
+        dispatch(setNotification({ message: 'Divarit synkattu onnistuneesti', requestStatus: 'success' }));
     } catch (error) {
+        dispatch(setNotification({ message: 'Virhe divareitten synkkauksessa', requestStatus: 'error' }));
         console.error('Error updating divari:', error);
     }
 };

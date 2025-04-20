@@ -1,12 +1,13 @@
 import { useDispatch } from "react-redux";
 import { updateBasketItemQuantity } from "../../actions/basketActions";
 import { useEffect, useState } from "react";
-
+import '../../styles/Order.css';
 
 const BasketSummaryRow = ({ item, updateQuantity }) => {
-    const {hinta, id, isbn, julkaisuvuosi, kpl, luokkaid, nimi, paino, quantity, tekija, tyyppiid} = item;
-    
-    
+    const { hinta, id, isbn, julkaisuvuosi, kpl, luokkaid, nimi, paino, quantity, tekija, tyyppiid } = item;
+
+    const canIncrease = quantity < kpl;
+
     return (
         <tr className="data-row">
             <td>{nimi}</td>
@@ -17,6 +18,7 @@ const BasketSummaryRow = ({ item, updateQuantity }) => {
                 <button 
                     className="button-secondary action-button" 
                     onClick={() => updateQuantity(id, 1)}
+                    disabled={!canIncrease}
                 >
                     +
                 </button>
@@ -51,7 +53,7 @@ const BasketSummary = ({items}) => {
     };
 
     return (
-        <div style={{}}>
+        <div className="basket-container">
             {items && items.length > 0 ? (
                 <table>
                     <thead>

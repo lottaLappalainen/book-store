@@ -26,18 +26,18 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>Luo tili</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleRegister}>
+    <div className="starter-page">
+      <form onSubmit={handleRegister} className="form-grid">
+        <h2>Luo tili</h2>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <input type="text" name="name" placeholder="Nimi" value={formData.name} onChange={handleChange} required />
         <input type="text" name="address" placeholder="Osoite" value={formData.address} onChange={handleChange} required />
         <input type="email" name="email" placeholder="Sähköposti" value={formData.email} onChange={handleChange} required />
         <input type="password" name="password" placeholder="Salasana" value={formData.password} onChange={handleChange} required />
         <input type="text" name="phone" placeholder="Puhelin" value={formData.phone} onChange={handleChange} required />
         <button type="submit" disabled={loading}>{loading ? "Rekisteröidään..." : "Luo tili"}</button>
+        <p>Onko sinulla jo tili? <a href="/login">Kirjaudu sisään tästä</a></p>
       </form>
-      <p>Onko sinulla jo tili? <a href="/login">Kirjaudu sisään tästä</a></p>
     </div>
   );
 }

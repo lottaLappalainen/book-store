@@ -17,14 +17,14 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Kirjautuminen</h2>
-      <form onSubmit={handleLogin}>
+    <div className="starter-page">
+      <form onSubmit={handleLogin} className="form-grid">
+        <h2>Kirjautuminen</h2>
         <input type="email" placeholder="Sähköposti" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Salasana" value={password} onChange={(e) => setPassword(e.target.value)} required />
         <button type="submit" disabled={loading}>{loading ? "Kirjaudutaan..." : "Kirjaudu sisään"}</button>
+        <p>Uusi käyttäjä? <a href="/register">Luo tili</a></p>
       </form>
-      <p>Uusi käyttäjä? <a href="/register">Luo tili</a></p>
     </div>
   );
 }
