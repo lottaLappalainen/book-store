@@ -3,11 +3,12 @@ import { setNotification } from '../actions/notificationActions';
 import { updateBasketItemQuantity, clearBasket } from '../actions/basketActions';
 import OrderSummary from './widgets/BasketSummary';
 import '../styles/Order.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useRevalidator } from 'react-router-dom';
 import { initializeOrder } from '../actions/orderActions';
 
 const Basket = () => {
   const basket = useSelector((state) => state.basket);
+  const userGlobal = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ const Basket = () => {
 
   const handleBasket = async () => {
     try {
-      const order = await initializeOrder(basket, dispatch);
+      const order = await initializeOrder(basket,userGlobal.id, dispatch);
       navigate('/order', { state: { order: order } });
       console.log("order", order);
     } catch (error) {
@@ -27,8 +28,9 @@ const Basket = () => {
     //navigate('/order');
   };
 
-  const handleCancelBasket = () => {
+  const handleCancelBasket =  async () => {
     dispatch(setNotification({ message: 'Tilaus peruttu.', requestStatus: 'error' }));
+
     dispatch(clearBasket());
   };
 
