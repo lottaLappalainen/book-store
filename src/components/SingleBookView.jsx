@@ -43,7 +43,7 @@ const SingleBookView = () => {
       <img src={bookImage} alt="Book Cover" className="book-image" />
       <div className="book-details">
         <h1>{book.nimi}</h1>
-        <p><strong>Tekijä:</strong> {book.tekija}</p>
+        <h4>Tekijä: <em>{book.tekija}</em></h4>
         {book.isbn && <p><strong>Isbn:</strong> {book.isbn}</p>}
         <p><strong>Tyyppi:</strong> {bookTyyppi}</p>
         <p><strong>Luokka:</strong> {bookLuokka}</p>
@@ -56,7 +56,7 @@ const SingleBookView = () => {
             {book.kpl === 0 ? "Ei saatavilla" : "Maksimi lisätty"}
           </button>
         )}
-      </div>
+      </div> 
     </div>
   );
 };

@@ -27,20 +27,30 @@ const Search = ({role}) => {
   const normalizeText = (text) => text.toLowerCase().trim();
 
   const getRelevanceScore = (title, searchWords) => {
-    const lowerTitle = title.toLowerCase();
+    const titleWords = title.toLowerCase().split(/\s+/);
     let score = 0;
-    let allWordsMatch = true;
   
     for (const word of searchWords) {
-      if (lowerTitle.includes(word)) {
-        score += 1;
-      } else {
-        allWordsMatch = false;
+      let matched = false;
+  
+      // Full word match
+      for (const titleWord of titleWords) {
+        if (titleWord === word) {
+          score += 2; // full word match gets higher weight
+          matched = true;
+          break;
+        }
+      }
+  
+      // If no full word match, check for partial
+      if (!matched && title.includes(word)) {
+        score += 1; // partial match
       }
     }
   
-    return allWordsMatch ? score : 0; // palautetaan 0 jos jokin sana ei täsmää ollenkaan
+    return score;
   };
+  
   
   const filteredBooks = books
     .map((book) => {

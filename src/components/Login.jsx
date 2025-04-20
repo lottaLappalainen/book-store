@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../actions/userActions';
-import '../styles/Starterpage.css';
 
 function Login() {
   const dispatch = useDispatch();
