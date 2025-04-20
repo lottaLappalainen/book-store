@@ -27,67 +27,68 @@ const Search = ({role}) => {
   const normalizeText = (text) => text.toLowerCase().trim();
 
   const getRelevanceScore = (title, searchWords) => {
-    const titleWords = title.toLowerCase().split(/\s+/);
+    const lowerTitle = title.toLowerCase();
     let score = 0;
+    let allWordsMatch = true;
   
     for (const word of searchWords) {
-      if (
-        titleWords.some(w => w.includes(word)) // partial or full match
-      ) {
+      if (lowerTitle.includes(word)) {
         score += 1;
+      } else {
+        allWordsMatch = false;
       }
     }
   
-    return score;
+    return allWordsMatch ? score : 0; // palautetaan 0 jos jokin sana ei täsmää ollenkaan
   };
-  
   
   const filteredBooks = books
     .map((book) => {
       const bookNimi = book.nimi ? normalizeText(book.nimi) : "";
       const bookTekija = book.tekija ? normalizeText(book.tekija) : "";
-  
       const bookTyyppi = tyypit.find((t) => t.id === book.tyyppiid)?.nimi || "";
       const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
   
-      const nameMatches = nimi ? getRelevanceScore(bookNimi, normalizeText(nimi).split(" ")) : 0;
+      const nameWords = normalizeText(nimi).split(/\s+/).filter(Boolean);
+      const relevance = nimi ? getRelevanceScore(bookNimi, nameWords) : 0;
+  
       const authorMatch = tekijä ? bookTekija.includes(normalizeText(tekijä)) : true;
       const typeMatch = selectedType ? normalizeText(bookTyyppi) === normalizeText(selectedType) : true;
       const categoryMatch = selectedCategory ? normalizeText(bookLuokka) === normalizeText(selectedCategory) : true;
-
+  
       return {
         ...book,
-        relevance: nameMatches,
+        relevance,
         match:
-        (!nimi || nameMatches > 0) &&
-        (!tekijä || authorMatch) &&
-        (!selectedType || typeMatch) &&
-        (!selectedCategory || categoryMatch)
+          (!nimi || relevance > 0) &&
+          (!tekijä || authorMatch) &&
+          (!selectedType || typeMatch) &&
+          (!selectedCategory || categoryMatch)
       };
     })
     .filter(book => book.match)
-    .sort((a, b) => b.relevance - a.relevance); // Sort by relevance descending  
+    .sort((a, b) => b.relevance - a.relevance); // järjestetään parhaat ensimmäiseksi
 
 
-  const calculatePrices = () => {
-    const booksToCalculate = selectedCategory
-      ? books.filter((book) => {
-          const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
-          return normalizeText(bookLuokka) === normalizeText(selectedCategory);
-        })
-      : books;
+    const calculatePrices = () => {
+      const booksToCalculate = selectedCategory
+        ? books.filter((book) => {
+            const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
+            return normalizeText(bookLuokka) === normalizeText(selectedCategory);
+          })
+        : books;
 
-    const totalPrice = booksToCalculate.reduce((sum, book) => {
-      const price = parseFloat(book.hinta) || 0; // Ensure hinta is a valid number
-      return sum + price;
-    }, 0);
+      const totalPrice = booksToCalculate.reduce((sum, book) => {
+        const price = parseFloat(book.hinta) || 0; // Ensure hinta is a valid number
+        return sum + price;
+      }, 0);
 
-    const avgPrice = booksToCalculate.length > 0 ? (totalPrice / booksToCalculate.length).toFixed(2) : 0;
+      const avgPrice = booksToCalculate.length > 0 ? (totalPrice / booksToCalculate.length).toFixed(2) : 0;
 
-    return { totalPrice: totalPrice.toFixed(2), avgPrice }; // Format totalPrice to 2 decimal places
-  };
+      return { totalPrice: totalPrice.toFixed(2), avgPrice }; // Format totalPrice to 2 decimal places
+    };
 
-  const { totalPrice, avgPrice } = calculatePrices();
+    const { totalPrice, avgPrice } = calculatePrices();
 
   return (
     <div className="search-container">

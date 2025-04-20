@@ -169,10 +169,7 @@ VALUES
     -- Kissat ja kuolemat
     ((SELECT id FROM keskusdivari.Teos WHERE isbn='5555555555'), 2, 3.75, '2022-08-12', 'myyty', NULL),
     ((SELECT id FROM keskusdivari.Teos WHERE isbn='5555555555'), 1, 3.25, NULL, 'vapaa', NULL)
-ON CONFLICT (teosId, divariId) 
-DO UPDATE SET ostohinta = EXCLUDED.ostohinta, 
-              myyntipvm = EXCLUDED.myyntipvm, 
-              tila = EXCLUDED.tila;
+ON CONFLICT DO NOTHING;
 
 -- Sama divari skeemaan
 INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)

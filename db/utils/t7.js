@@ -116,22 +116,18 @@ export const syncTeosAndNide = async () => {
             await pool.query(`
                 INSERT INTO keskusdivari.Nide (teosId, divariId, ostohinta, myyntipvm, tila, tilausId)
                 VALUES ($1, $2, $3, $4, $5, $6)
-                ON CONFLICT (teosId, divariId) DO UPDATE
-                SET ostohinta = EXCLUDED.ostohinta, myyntipvm = EXCLUDED.myyntipvm,
-                    tila = EXCLUDED.tila, tilausId = EXCLUDED.tilausId
             `, [teosIdKeskus, divariIdKeskus, nide.ostohinta, nide.myyntipvm, nide.tila, nide.tilausid]);
 
-            
             await pool.query(`
                 UPDATE keskusdivari.SyncStatus
                 SET edellinenSync = CURRENT_TIMESTAMP
                 WHERE tauluNimi = $1
             `, ['Nide']);
         }
-
-        
         console.log('Synchronization complete.');
+        return { success: true, message: 'Synchronization complete' };
     } catch (error) {
         console.error('Error during synchronization:', error.message);
+        throw error;
     }
 };

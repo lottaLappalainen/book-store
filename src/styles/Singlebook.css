@@ -1,0 +1,50 @@
+.single-book-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: flex-start;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .book-image {
+    max-width: 300px;
+    height: auto;
+  }
+  
+  .book-details {
+    flex: 1;
+  }
+  
+  .book-details h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .book-details p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  
+  .book-details p strong {
+    color: #333;
+  }
+  
+  .book-details button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: #0071ce;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .book-details button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+  

@@ -10,7 +10,7 @@ CREATE TABLE keskusdivari.KeskusdivariInfo (
 
 CREATE TABLE keskusdivari.SyncStatus (
     id SERIAL PRIMARY KEY,
-    tauluNimi VARCHAR(50) NOT NULL,
+    tauluNimi VARCHAR(50) NOT NULL UNIQUE,
     edellinenSync TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE keskusdivari.Kayttaja (
     osoite VARCHAR(150) NOT NULL,
     sposti VARCHAR(150) UNIQUE NOT NULL,
     puh VARCHAR(50),
-    salasana VARCHAR(150) UNIQUE NOT NULL,
+    salasana VARCHAR(150) NOT NULL,
     rooli VARCHAR(10) NOT NULL CHECK (rooli IN ('yllapitaja', 'asiakas'))
 );
 

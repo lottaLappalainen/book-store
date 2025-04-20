@@ -74,6 +74,9 @@
 /*Layout*/
 body {
     font-family: 'Montserrat', sans-serif;
+    background-image: url('./assets/background.jpg');
+    background-size: cover; 
+      
 }
 
 h1 {
