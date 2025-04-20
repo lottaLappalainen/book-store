@@ -1,15 +1,15 @@
 import { missingParams } from "../../utils/validationMessages.js"
 
-export const createTilaus = (tilauspvm, hinta, tila = 'vahvistamaton') => {
+export const createTilaus = (tilauspvm, hinta, tila = 'vahvistamaton', kayttajaId) => {
     if (!tilauspvm, !hinta) throw new Error(missingParams);
 
     return {
         text: `
-            INSERT INTO keskusdivari.Tilaus (tilauspvm, hinta, tila)
-            VALUES ($1, $2, $3)
+            INSERT INTO keskusdivari.Tilaus (tilauspvm, hinta, tila, kayttajaId)
+            VALUES ($1, $2, $3, $4)
             RETURNING *;
         `,
-        values: [tilauspvm, hinta, tila],
+        values: [tilauspvm, hinta, tila, kayttajaId],
     };
 };
 
@@ -24,16 +24,27 @@ export const getTilausForUpdate = (id) => {
     }
 };
 
-export const updateTilaus = (id, tilauspvm, hinta, tila) => {
+export const updateTilaus = (id, tilauspvm, hinta, tila, kayttajaId) => {
     return {
         text: `
             UPDATE keskusdivari.Tilaus
             SET tilauspvm = $2,
                 hinta = $3,
-                tila = $4
+                tila = $4,
+                kayttajaId = $5
             WHERE id = $1;
         `,
-        values: [id, tilauspvm, hinta, tila],
+        values: [id, tilauspvm, hinta, tila, kayttajaId],
+    };
+};
+
+export const deleteTilaus = (id) => {
+    return {
+        text: `
+            DELETE FROM keskusdivari.Tilaus
+            WHERE id = $1;
+        `,
+        values: [id],
     };
 };
 
@@ -104,5 +115,17 @@ export const createLahetys = (postikulut, tilausId) => {
             RETURNING *;
         `,
         values: [postikulut, tilausId],
+    };
+};
+
+export const releaseNide = (nideId) => {
+
+    return {
+        text: `
+            UPDATE keskusdivari.Nide
+            SET tila = 'vapaa'
+            WHERE id = $1;
+        `,
+        values: [nideId],
     };
 };

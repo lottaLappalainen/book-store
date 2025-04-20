@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { calculateBasketPriceSum } from "../actions/basketActions";
 import '../styles/Order.css';
-import { getPostikulutaulukkoValues } from "../actions/orderActions";
-import orderSplitter from "../actions/orderSplitter";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
+import { cancelOrder, confirmOrder } from "../actions/orderActions";
 
 
 const Order = () => {
     const { state } = useLocation();
 
-
     const items = useSelector((state) => state.basket);
     const userGlobal = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     
     const [user, setUser] = useState(userGlobal);
@@ -29,22 +29,6 @@ const Order = () => {
         niteet: [],
     });
 
-   const [orderItems, setOrderItems] = useState();
-
-    //Hae postikulutaulukko ja laske tilauksen kok.paino
-    useEffect(() => {
-        const getPostikulutaulukko = async () => {
-            try {
-                const data = await getPostikulutaulukkoValues();
-                setPostikulutaulukko(data);
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        getPostikulutaulukko();
-
-    }, []);
-
 
     useEffect(() => {
         setOrder({
@@ -58,61 +42,7 @@ const Order = () => {
         });
     }, [state])
 
-   /*
-    function findClosestHintaByPaino(arr, target) {
-        if (!arr.length) return null;
-
-        const closestItem = arr.reduce((closest, item) => {
-          const currDiff = Math.abs(item.max_paino - target);
-          const closestDiff = Math.abs(closest.max_paino - target);
-          return currDiff < closestDiff ? item : closest;
-        });
-
-        return closestItem.hinta;
-    }
-
-    useEffect(() => {
-        if (postikulutaulukko) {
-            console.log(items)
-            let weight = 0;
-            items.forEach(item => {
-                weight = weight+item.paino*item.quantity;
-            });
-            setOrderWeight(weight);
-
-            const max = postikulutaulukko.reduce(
-                (max, item) => (item.max_paino > max.max_paino ? item : max), postikulutaulukko[0]
-            );
-
-            const tempOrders = orderSplitter(items, max.max_paino);
-            let tempPostage = 0;
-            tempOrders.forEach((order, index) => {
-                if (index === tempOrders.length - 1) order.postikulut = findClosestHintaByPaino(postikulutaulukko, order.paino);
-                else order.postikulut = max.hinta;
-
-                tempPostage += parseFloat(order.postikulut);
-            });
-            setOrderItems(tempOrders);
-            setOrderPostage(tempPostage);
-        }
-    }, [postikulutaulukko]);
-   */
-
-
-
-    const handleUseEmail = () => {
-        setOrder({
-            ...order,
-            useEmail: !order.useEmail,
-        });
-    };
-
-    const handleUsePhone = () => {
-        setOrder({
-            ...order,
-            usePhone: !order.usePhone,
-        });
-    };
+  
 
     const handleChangePhone = (e) => {
         setUser({
@@ -121,9 +51,15 @@ const Order = () => {
         })
     };
 
-    const handleConfirmOrder = async () => {
-        console.log(order)
-        await confirmOrder(order);
+    const handleConfirmOrder = async (e) => {
+        e.preventDefault();
+
+        await confirmOrder(order, dispatch, navigate); 
+    };
+
+    const handleCancelOrder = async (e) => {
+        e.preventDefault();
+        await cancelOrder(order, dispatch, navigate);
     };
 
     return (
@@ -180,7 +116,8 @@ const Order = () => {
                         <div>Yht.</div><div>{parseFloat(order.price) + order.postage}</div>
                     </div>
                 </section>
-                
+                <button className="button-primary" onClick={handleConfirmOrder}>Vahvista tilaus</button>
+                <button className="button-secondary-light" onClick={handleCancelOrder}>Hylkää tilaus</button>
             </form>
 
 

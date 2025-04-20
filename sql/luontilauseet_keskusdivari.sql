@@ -36,7 +36,8 @@ CREATE TABLE keskusdivari.Tilaus (
     id SERIAL PRIMARY KEY,
     tilauspvm DATE NOT NULL,
     hinta NUMERIC(10,2) NOT NULL,
-    tila VARCHAR(13) NOT NULL CHECK (tila IN ('vahvistamaton', 'maksettu', 'lahetetty'))
+    tila VARCHAR(13) NOT NULL CHECK (tila IN ('vahvistamaton', 'maksettu', 'lahetetty')),
+    kayttajaId SERIAL REFERENCES keskusdivari.Kayttaja(id) ON DELETE SET NULL
 );
 
 CREATE TABLE keskusdivari.Lahetys (

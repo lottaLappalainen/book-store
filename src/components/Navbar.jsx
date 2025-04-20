@@ -3,9 +3,15 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../actions/userActions';
 import { syncDivaris } from "../actions/booksActions";
 import '../styles/Navbar.css';
+import { downloadUserOrdersCsv } from "../actions/utilActions";
 
 function Navbar({ role }) {
   const dispatch = useDispatch();
+
+  const handleDownloadOrderReport = async (e) => {
+    e.preventDefault();
+    await downloadUserOrdersCsv(dispatch);
+  };
 
   return (
     <div className="navbar-wrapper">
@@ -16,7 +22,8 @@ function Navbar({ role }) {
           {(role === "asiakas") && <li><NavLink to="/basket">Ostoskori</NavLink></li>}
           {(role === "yllapitaja") && <li><NavLink to="/addbook">Lisää kirja</NavLink></li>}
           {(role === "yllapitaja") && <li><NavLink to="/adddivari">Lisää divari</NavLink></li>}
-          {role === "yllapitaja" && <button className="button-secondary button-small" onClick={() => dispatch(syncDivaris())}>Synkkaa divarit</button>}
+          {role === "yllapitaja" && <button className="button-primary-light button-small" onClick={() => dispatch(syncDivaris())}>Synkkaa divarit</button>}
+          {role === "yllapitaja" && <button className="button-primary-light button-small" onClick={handleDownloadOrderReport}>Lataa tilausraportti</button>}
         </ul>
         <button className="button-secondary button-small" onClick={() => dispatch(logout())}>Kirjaudu ulos</button>
       </nav>
