@@ -105,15 +105,15 @@ const Order = () => {
 
                     <div className="summary-row">
                         <div>Hinta</div>
-                        <div>{order.price}</div>
+                        <div>{order.price} €</div>
                     </div>
 
                     <div className="summary-row">
                         <div>Postikulut</div>
-                        <div>{order.postage}</div>
+                        <div>{order.postage} €</div>
                     </div>
                     <div className="summary-row">
-                        <div>Yht.</div><div>{parseFloat(order.price) + order.postage}</div>
+                        <div>Yht.</div><div>{(parseFloat(order.price) + order.postage).toFixed(2)} €</div>
                     </div>
                 </section>
                 <button className="button-primary" onClick={handleConfirmOrder}>Vahvista tilaus</button>
