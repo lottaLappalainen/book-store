@@ -1,5 +1,4 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Notification from './components/Notification';
 import Books from './components/Books';
@@ -16,9 +15,6 @@ import Order from './components/Order';
 function App() {
   const notification = useSelector(state => state.notification);
   const role = useSelector(state => state.user.role);
-  const user = useSelector(state => state.user);
-
-  //TODO: Poista temp kohdat
 
   return (
     <div className='main-content'>

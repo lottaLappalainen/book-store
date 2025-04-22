@@ -1,11 +1,10 @@
 import { pool } from "../../backend.js";
 import * as q from '../queries/tilausQueries.js';
-import { getDivari } from "../queries/divariCRUD.js";
 
 export const setupTilausRoutes = (backend) => {
 
     backend.post('/api/tilaa', async (req, res) => {
-        const {userId, items} = req.body; // items = [{ teosId, quantity, hinta }]
+        const {userId, items} = req.body; 
         try {
             //varaa ja hae niteet
             let niteet = [];
@@ -25,9 +24,6 @@ export const setupTilausRoutes = (backend) => {
                 ...order[0],
                 niteet: niteet,
             };
-
-            await pool.query('COMMIT');
-
             res.status(200).json(response);
     
         } catch (error) {

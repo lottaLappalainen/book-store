@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { calculateBasketPriceSum } from "../actions/basketActions";
 import '../styles/Order.css';
-import { redirect, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { cancelOrder, confirmOrder } from "../actions/orderActions";
 
 
