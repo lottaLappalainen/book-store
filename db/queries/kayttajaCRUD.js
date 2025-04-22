@@ -40,7 +40,6 @@ export const getAllKayttajat = () => {
     };
 };
 
-//TODO: Lisää puh validointi tarvittaessa
 export const updateKayttaja = (id, nimi, osoite, sposti, puh, salasana, rooli) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     if (rooli && !validateRooli(rooli)) throw new Error(invalidRooli);
