@@ -14,7 +14,6 @@ const AddBookForm = () => {
         paino: "",
         tyyppiId: "",
         luokkaId: "",
-        ostohinta: "",
         teosId: "",
     });
 
@@ -54,10 +53,14 @@ const AddBookForm = () => {
                 divariId: hardcodedDivariId,
             }));
         } else {
+            const selectedBook = books.find(b => b.id === parseInt(formData.teosId));
+            if (!selectedBook) return alert("Valitsemasi teos ei löytynyt.");
+            const hinta = parseFloat(selectedBook.hinta).toFixed(2);
+
             dispatch(addTeosToD2(
-                parseInt(formData.teosId),
+                selectedBook.id,
                 hardcodedDivariId,
-                parseFloat(formData.ostohinta).toFixed(2)
+                hinta
             ));
         }
 
@@ -70,7 +73,6 @@ const AddBookForm = () => {
             paino: "",
             tyyppiId: "",
             luokkaId: "",
-            ostohinta: "",
             teosId: "",
         });
     };
@@ -113,15 +115,14 @@ const AddBookForm = () => {
                         <select name="teosId" value={formData.teosId} onChange={handleChange} className="w-full p-2 border rounded mb-2">
                             <option value="">Valitse teos</option>
                             {[...books]
-                            .filter(book => book?.nimi && book?.tekija)
-                            .sort((a, b) => a.nimi.localeCompare(b.nimi))
-                            .map((book) => (
-                                <option key={book.id} value={book.id}>
-                                    {book.nimi} - {book.tekija}
-                                </option>
-                            ))}
+                                .filter(book => book?.nimi && book?.tekija)
+                                .sort((a, b) => a.nimi.localeCompare(b.nimi))
+                                .map((book) => (
+                                    <option key={book.id} value={book.id}>
+                                        {book.nimi} - {book.tekija}
+                                    </option>
+                                ))}
                         </select>
-                        <input name="ostohinta" value={formData.ostohinta} onChange={handleChange} required placeholder="Ostohinta (€)" className="w-full p-2 border rounded mb-2" />
                     </>
                 )}
 

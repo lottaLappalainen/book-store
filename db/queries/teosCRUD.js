@@ -49,7 +49,9 @@ export const getTeosWithNideCount = (id) => {
     if (!id || isNaN(id)) throw new Error(invalidId);
     return {
         text: `
-            SELECT t.*, COALESCE(COUNT(n.id), 0) AS kpl 
+            SELECT 
+                t.*, 
+                COUNT(n.id) FILTER (WHERE n.tila = 'vapaa') AS kpl
             FROM keskusdivari.Teos t
             LEFT JOIN keskusdivari.Nide n ON t.id = n.teosId
             WHERE t.id = $1
@@ -63,7 +65,9 @@ export const getTeosWithNideCount = (id) => {
 export const getAllTeoksetWithNideCount = () => {
     return {
         text: `
-            SELECT t.*, COALESCE(COUNT(n.id), 0) AS kpl 
+            SELECT 
+                t.*, 
+                COUNT(n.id) FILTER (WHERE n.tila = 'vapaa') AS kpl
             FROM keskusdivari.Teos t
             LEFT JOIN keskusdivari.Nide n ON t.id = n.teosId
             GROUP BY t.id;
