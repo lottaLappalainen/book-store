@@ -9,6 +9,7 @@ import {
   UPDATE_USER_PHONE
 } from '../actions/userActions';
 
+//the role is guest by default, so only login/register is shown
 const initialState = {
   id: null,
   name: null,

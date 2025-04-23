@@ -17,14 +17,15 @@ const AddBookForm = () => {
         teosId: "",
     });
 
-    const [isNewBook, setIsNewBook] = useState(true);
+    const [isNewBook, setIsNewBook] = useState(true); // determines whether we're adding a new book or selecting an existing one
 
     const dispatch = useDispatch();
-    const tyypit = useSelector((state) => state.types.types);
+    const tyypit = useSelector((state) => state.types.types); 
     const luokat = useSelector((state) => state.categories.categories);
-    const books = useSelector((state) => state.books.books);
+    const books = useSelector((state) => state.books.books); 
 
     useEffect(() => {
+        // fetch options for types, categories, and books when form mounts
         dispatch(fetchTypes());
         dispatch(fetchCategories());
         dispatch(fetchBooks());
@@ -32,15 +33,17 @@ const AddBookForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({ ...formData, [name]: value }); // update form state on input change
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // divariId is hardcoded: D1 for new book, D2 for existing one
         const hardcodedDivariId = isNewBook ? 1 : 2;
 
         if (isNewBook) {
+            // this creates a brand new book entry in both central and D1's DB
             dispatch(addTeosToD1({
                 isbn: formData.isbn || null,
                 nimi: formData.nimi,
@@ -53,6 +56,7 @@ const AddBookForm = () => {
                 divariId: hardcodedDivariId,
             }));
         } else {
+            // this adds an existing book to D2's stock
             const selectedBook = books.find(b => b.id === parseInt(formData.teosId));
             if (!selectedBook) return alert("Valitsemasi teos ei löytynyt.");
             const hinta = parseFloat(selectedBook.hinta).toFixed(2);
@@ -89,6 +93,7 @@ const AddBookForm = () => {
                 </div>
                 {isNewBook ? (
                     <>
+                        {/* inputs for adding a brand new book */}
                         <input name="isbn" value={formData.isbn} onChange={handleChange} placeholder="ISBN (valinnainen)" className="w-full p-2 border rounded mb-2" />
                         <input name="nimi" value={formData.nimi} onChange={handleChange} required placeholder="Kirjan nimi" className="w-full p-2 border rounded mb-2" />
                         <input name="tekija" value={formData.tekija} onChange={handleChange} required placeholder="Kirjailija" className="w-full p-2 border rounded mb-2" />
@@ -112,6 +117,7 @@ const AddBookForm = () => {
                     </>
                 ) : (
                     <>
+                        {/* dropdown for choosing an existing book */}
                         <select name="teosId" value={formData.teosId} onChange={handleChange} className="w-full p-2 border rounded mb-2">
                             <option value="">Valitse teos</option>
                             {[...books]

@@ -72,10 +72,13 @@ export const getPostikulutaulukkoValues = async () => {
 
 export const initializeOrder = async (items, userId, dispatch) => {
     dispatch(setNotification({ message: 'Tehdään tilausta...', requestStatus: 'loading' }));
+    console.log("userid", userId)
     const bodyJSON = JSON.stringify({
         userId: userId,
         items: items,
     });
+
+    console.log("here", bodyJSON)
 
     try {
         const response = await fetch(`${API_URL}/tilaa`, {
@@ -162,6 +165,7 @@ export const confirmOrder = async (order, dispatch, navigate) => {
         dispatch(clearBasket());
         navigate('/books');
     } catch (error) {
+        dispatch(setNotification({ message: 'Virhe tilauksen vahvistamisessa', requestStatus: 'error' }));
         console.log("Virhe vahvistettaessa tilausta", error);
         throw error;
     };
@@ -185,6 +189,7 @@ export const cancelOrder = async (order, dispatch, navigate) => {
         dispatch(setNotification({ message: 'Tilaus peruttu', requestStatus: 'success' }));
         navigate('/basket');
     } catch (error) {
+        dispatch(setNotification({ message: 'Virhe tilausta peruttaessa', requestStatus: 'error' }));
         console.log("Virhe tilausta peruttaessa", error);
         throw error;
     }

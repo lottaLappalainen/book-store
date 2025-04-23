@@ -1,5 +1,6 @@
 import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from '../actions/notificationActions';
 
+//empty at first and after clearing, so there is no notification to show
 const initialState = {
   message: '',
   requestStatus: '',
