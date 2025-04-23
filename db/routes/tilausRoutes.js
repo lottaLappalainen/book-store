@@ -6,6 +6,7 @@ export const setupTilausRoutes = (backend) => {
     backend.post('/api/tilaa', async (req, res) => {
         const {userId, items} = req.body; 
         console.log("here");
+        console.log(userId);
         try {
             //varaa ja hae niteet
             let niteet = [];

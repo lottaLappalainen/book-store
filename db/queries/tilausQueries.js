@@ -1,7 +1,8 @@
 import { missingParams } from "../../utils/validationMessages.js"
 
 export const createTilaus = (tilauspvm, hinta, tila = 'vahvistamaton', kayttajaId) => {
-    if (!tilauspvm || !hinta) throw new Error(missingParams);
+    if (!tilauspvm || !hinta || !kayttajaId) throw new Error(missingParams);
+    console.log("kayttäjäid",kayttajaId)
 
     return {
         text: `
@@ -24,17 +25,16 @@ export const getTilausForUpdate = (id) => {
     }
 };
 
-export const updateTilaus = (id, tilauspvm, hinta, tila, kayttajaId) => {
+export const updateTilaus = (id, tilauspvm, hinta, tila) => {
     return {
         text: `
             UPDATE keskusdivari.Tilaus
             SET tilauspvm = $2,
                 hinta = $3,
-                tila = $4,
-                kayttajaId = $5
+                tila = $4
             WHERE id = $1;
         `,
-        values: [id, tilauspvm, hinta, tila, kayttajaId],
+        values: [id, tilauspvm, hinta, tila],
     };
 };
 
