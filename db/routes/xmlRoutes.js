@@ -18,7 +18,6 @@ export const setupXmlRoutes = (backend) => {
                 return res.status(400).json({ error: "Invalid divari information: missing nimi or osoite." });
             }
 
-            console.log(`Adding divari: nimi=${nimi}, osoite=${osoite}`);
             const divariQuery = `
                 INSERT INTO keskusdivari.Divari (nimi, osoite, omaTietokanta)
                 VALUES ($1, $2, false)
@@ -33,9 +32,7 @@ export const setupXmlRoutes = (backend) => {
                 return res.status(400).json({ error: "Divari already exists." });
             }
 
-            console.log(`Inserted divari with ID ${divariId}. Parsing XML data...`);
             const parsedData = await parseStringPromise(xml, { explicitArray: false });
-            console.log("Parsed XML data:", JSON.stringify(parsedData, null, 2));
 
             if (!parsedData.teokset || !parsedData.teokset.teos) {
                 console.error("Invalid XML structure. Missing 'teokset' or 'teos' elements.");
@@ -46,26 +43,33 @@ export const setupXmlRoutes = (backend) => {
                 ? parsedData.teokset.teos
                 : [parsedData.teokset.teos];
 
-            console.log(`Found ${teokset.length} 'teos' elements in the XML.`);
-
             for (const teos of teokset) {
                 const { nimi: teosNimi, tekija, isbn } = teos.ttiedot;
                 const niteet = Array.isArray(teos.nide) ? teos.nide : [teos.nide];
 
                 const hinta = niteet[0]?.hinta;
-                const paino = niteet[0]?.paino;
+                let paino = niteet[0]?.paino;
+
+                // Because paino is optional, let's find the first non-null value
+                // if paino is not provided in the first nide
+                if (!paino || isNaN(parseInt(paino))) {
+                  for(const nide of niteet) {
+                      if (nide.paino) {
+                          paino = nide.paino;
+                          break;
+                      }
+                  }
+                }
 
                 if (!hinta || isNaN(parseFloat(hinta))) {
-                    console.error(`Invalid or missing hinta for teos: ${JSON.stringify(teos)}`);
+                    console.log(`Invalid or missing hinta for teos: ${JSON.stringify(teos)}`);
                     continue;
                 }
 
+                // If we found no paino, let's set it to 500
                 if (!paino || isNaN(parseInt(paino))) {
-                    console.error(`Invalid or missing paino for teos: ${JSON.stringify(teos)}`);
-                    continue;
+                    paino = 500;
                 }
-
-                console.log(`Processing teos: nimi=${teosNimi}, tekija=${tekija}, isbn=${isbn}, hinta=${hinta}, paino=${paino}`);
 
                 const teosQuery = `
                     INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino)
@@ -81,11 +85,8 @@ export const setupXmlRoutes = (backend) => {
                     continue;
                 }
 
-                console.log(`Inserted teos with ID ${teosId} into the database.`);
-
                 for (const nide of niteet) {
                     const { hinta: nideHinta } = nide;
-                    console.log(`Processing nide: hinta=${nideHinta || "null"}`);
 
                     const nideQuery = `
                         INSERT INTO keskusdivari.Nide (teosId, divariId, ostohinta, tila)
@@ -96,7 +97,6 @@ export const setupXmlRoutes = (backend) => {
                         divariId,
                         nideHinta ? parseFloat(nideHinta) : parseFloat(hinta),
                     ]);
-                    console.log("Inserted nide into the database.");
                 }
             }
 

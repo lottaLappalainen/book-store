@@ -79,7 +79,7 @@ VALUES
 
 -- TRIGGER TESTAUS
 --INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
---VALUES ('9155430674', 'Elektran tytär', 'Madeleine Brent', 9.99, 1986, 500, 
+--VALUES ('9155430674', 'Elektran tytär', 'Madeleine Brent', 9.99, 1986, 500,
 --        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'romaani'),
 --        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'romantiikka'), 1)
 --ON CONFLICT DO NOTHING;
@@ -95,21 +95,21 @@ VALUES
 -- ON CONFLICT DO NOTHING;
 
 -- t6 testi
-INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
-VALUES ('1234598765', 'Testikirja', 'Kuppi Javaa', 4.99, 2025, 900, 
-        (SELECT id FROM divari.TeosTyyppi WHERE nimi = 'tietokirja'),
-        (SELECT id FROM divari.TeosLuokka WHERE nimi = 'opas'), 1)
-ON CONFLICT DO NOTHING;
+--INSERT INTO divari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId, divariId)
+--VALUES ('1234598765', 'Testikirja', 'Kuppi Javaa', 4.99, 2025, 900,
+        --(SELECT id FROM divari.TeosTyyppi WHERE nimi = 'tietokirja'),
+        --(SELECT id FROM divari.TeosLuokka WHERE nimi = 'opas'), 1)
+--ON CONFLICT DO NOTHING;
 
-INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId)
-VALUES ('1234598765', 'Testikirja', 'Kuppi Javaa', 4.99, 2025, 900, 
-        (SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'tietokirja'),
-        (SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'opas'))
-ON CONFLICT DO NOTHING;
+--INSERT INTO keskusdivari.Teos (isbn, nimi, tekija, hinta, julkaisuvuosi, paino, tyyppiId, luokkaId)
+--VALUES ('1234598765', 'Testikirja', 'Kuppi Javaa', 4.99, 2025, 900,
+        --(SELECT id FROM keskusdivari.TeosTyyppi WHERE nimi = 'tietokirja'),
+        --(SELECT id FROM keskusdivari.TeosLuokka WHERE nimi = 'opas'))
+--ON CONFLICT DO NOTHING;
 
-INSERT INTO divari.Nide (teosId, ostohinta, myyntipvm, tila)
-VALUES((SELECT id FROM divari.Teos WHERE isbn='1234598765'),
-        3.99, '2021-01-01', 'vapaa');
+--INSERT INTO divari.Nide (teosId, ostohinta, myyntipvm, tila)
+--VALUES((SELECT id FROM divari.Teos WHERE isbn='1234598765'),
+        --3.99, '2021-01-01', 'vapaa');
 -- end testi
 
 INSERT INTO keskusdivari.SyncStatus (tauluNimi)
