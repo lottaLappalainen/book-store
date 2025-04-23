@@ -12,8 +12,9 @@ const BasketSummaryRow = ({ item, updateQuantity }) => {
         <tr className="data-row">
             <td>{nimi}</td>
             <td>{tekija}</td>
-            <td>{hinta}</td>
+            <td>{hinta} €</td>
             <td>{quantity}</td>
+            <td>{paino} g</td>
             <td>
                 <button 
                     className="button-secondary action-button" 
@@ -33,20 +34,21 @@ const BasketSummaryRow = ({ item, updateQuantity }) => {
     );
 };
 
-
-const BasketSummary = ({items}) => {
+const BasketSummary = ({ items }) => {
     const dispatch = useDispatch();
-    const [fullPrice, setFullPrice] = useState();
-    
+    const [fullPrice, setFullPrice] = useState(0);
+    const [totalWeight, setTotalWeight] = useState(0);
 
     useEffect(() => {
         let price = 0;
+        let weight = 0;
         items.forEach(item => {
-            price = price + item.quantity * parseFloat(item.hinta);
+            price += item.quantity * parseFloat(item.hinta);
+            weight += item.quantity * parseFloat(item.paino);
         });
         setFullPrice(price.toFixed(2));
-    },[items]);
-
+        setTotalWeight(weight);
+    }, [items]);
 
     const handleUpdateQuantity = (bookId, amount) => {
         dispatch(updateBasketItemQuantity(bookId, amount));
@@ -62,12 +64,13 @@ const BasketSummary = ({items}) => {
                             <th scope="col">Tekijä</th>
                             <th scope="col">Hinta</th>
                             <th scope="col">Kplmäärä</th>
+                            <th scope="col">Paino</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {items.map((item) => (
-                            <BasketSummaryRow key={item.id} item={item} updateQuantity={handleUpdateQuantity}/>
+                            <BasketSummaryRow key={item.id} item={item} updateQuantity={handleUpdateQuantity} />
                         ))}
                     </tbody>
                     <tfoot>
@@ -75,9 +78,12 @@ const BasketSummary = ({items}) => {
                             <th scope="row" colSpan="3">Kokonaishinta</th>
                             <td>{fullPrice} €</td>
                         </tr>
+                        <tr>
+                            <th scope="row" colSpan="3">Kokonaispaino</th>
+                            <td>{totalWeight} g</td>
+                        </tr>
                     </tfoot>
                 </table>
-                
             ) : (
                 <p>No items</p>
             )}
