@@ -12,10 +12,6 @@ const Basket = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleUpdateQuantity = (bookId, amount) => {
-    dispatch(updateBasketItemQuantity(bookId, amount));
-  };
-
   const handleBasket = async () => {
     try {
       const order = await initializeOrder(basket,userGlobal.id, dispatch);
@@ -24,13 +20,10 @@ const Basket = () => {
     } catch (error) {
       console.log(error)
     }
-    
-    //navigate('/order');
   };
 
   const handleCancelBasket =  async () => {
     dispatch(setNotification({ message: 'Tilaus peruttu.', requestStatus: 'error' }));
-
     dispatch(clearBasket());
   };
 
@@ -44,10 +37,10 @@ const Basket = () => {
             <OrderSummary items={basket} />
             <div className="button-row">
               <button className="button-primary-light" onClick={handleBasket}>
-                Place Order
+                Tee tilaus
               </button>
               <button className="button-secondary-light" onClick={handleCancelBasket}>
-                Cancel Order
+                Peru tilaus
               </button>
             </div>
           </>

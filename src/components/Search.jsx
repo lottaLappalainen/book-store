@@ -26,6 +26,7 @@ const Search = ({role}) => {
 
   const normalizeText = (text) => text.toLowerCase().trim();
 
+  // This handles relevance scoring based on how well book title matches search words
   const getRelevanceScore = (title, searchWords) => {
     const titleWords = title.toLowerCase().split(/\s+/);
     let score = 0;
@@ -33,7 +34,7 @@ const Search = ({role}) => {
     for (const word of searchWords) {
       let matched = false;
   
-      // Full word match
+      // Full word match gives more points
       for (const titleWord of titleWords) {
         if (titleWord === word) {
           score += 2; // full word match gets higher weight
@@ -42,7 +43,7 @@ const Search = ({role}) => {
         }
       }
   
-      // If no full word match, check for partial
+      // Partial match still counts, just less
       if (!matched && title.includes(word)) {
         score += 1; // partial match
       }
@@ -51,21 +52,20 @@ const Search = ({role}) => {
     return score;
   };
   
-  
   const filteredBooks = books
     .map((book) => {
       const bookNimi = book.nimi ? normalizeText(book.nimi) : "";
       const bookTekija = book.tekija ? normalizeText(book.tekija) : "";
       const bookTyyppi = tyypit.find((t) => t.id === book.tyyppiid)?.nimi || "";
       const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
-  
+
       const nameWords = normalizeText(nimi).split(/\s+/).filter(Boolean);
       const relevance = nimi ? getRelevanceScore(bookNimi, nameWords) : 0;
-  
+
       const authorMatch = tekijä ? bookTekija.includes(normalizeText(tekijä)) : true;
       const typeMatch = selectedType ? normalizeText(bookTyyppi) === normalizeText(selectedType) : true;
       const categoryMatch = selectedCategory ? normalizeText(bookLuokka) === normalizeText(selectedCategory) : true;
-  
+
       return {
         ...book,
         relevance,
@@ -77,28 +77,28 @@ const Search = ({role}) => {
       };
     })
     .filter(book => book.match)
-    .sort((a, b) => b.relevance - a.relevance); // järjestetään parhaat ensimmäiseksi
+    .sort((a, b) => b.relevance - a.relevance); // sort so most relevant results are at the top
 
+  // Just calculates total and average price of books in the selected category
+  const calculatePrices = () => {
+    const booksToCalculate = selectedCategory
+      ? books.filter((book) => {
+          const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
+          return normalizeText(bookLuokka) === normalizeText(selectedCategory);
+        })
+      : books;
 
-    const calculatePrices = () => {
-      const booksToCalculate = selectedCategory
-        ? books.filter((book) => {
-            const bookLuokka = luokat.find((l) => l.id === book.luokkaid)?.nimi || "";
-            return normalizeText(bookLuokka) === normalizeText(selectedCategory);
-          })
-        : books;
+    const totalPrice = booksToCalculate.reduce((sum, book) => {
+      const price = parseFloat(book.hinta) || 0; // Ensure hinta is a valid number
+      return sum + price;
+    }, 0);
 
-      const totalPrice = booksToCalculate.reduce((sum, book) => {
-        const price = parseFloat(book.hinta) || 0; // Ensure hinta is a valid number
-        return sum + price;
-      }, 0);
+    const avgPrice = booksToCalculate.length > 0 ? (totalPrice / booksToCalculate.length).toFixed(2) : 0;
 
-      const avgPrice = booksToCalculate.length > 0 ? (totalPrice / booksToCalculate.length).toFixed(2) : 0;
+    return { totalPrice: totalPrice.toFixed(2), avgPrice }; 
+  };
 
-      return { totalPrice: totalPrice.toFixed(2), avgPrice }; // Format totalPrice to 2 decimal places
-    };
-
-    const { totalPrice, avgPrice } = calculatePrices();
+  const { totalPrice, avgPrice } = calculatePrices();
 
   return (
     <div className="search-container">
@@ -147,6 +147,7 @@ const Search = ({role}) => {
           </select>
       </div>
 
+      {/* Show price summary only when category is selected and no search is active */}
       {selectedCategory && !nimi && !tekijä && !selectedType && (
         <div className="price-summary">
           <p><strong>Kokonaishinta:</strong> {totalPrice}€</p>

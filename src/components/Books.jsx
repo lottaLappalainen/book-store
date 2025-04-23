@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setNotification } from '../actions/notificationActions';
-import { addToBasket } from '../actions/basketActions';
 import { fetchBooks } from '../actions/booksActions';
 import '../styles/Books.css';
 
@@ -15,10 +14,6 @@ const Books = () => {
     dispatch(fetchBooks());
     dispatch(setNotification({ message: 'Kirjat haettu onnistuneesti', requestStatus: 'success' }));
   }, [dispatch]);
-
-  const handleAddToBasket = (book) => {
-    dispatch(addToBasket(book));
-  };
 
   return (
     <div className="book-container">
