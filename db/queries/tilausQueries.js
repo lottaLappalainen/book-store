@@ -1,7 +1,7 @@
 import { missingParams } from "../../utils/validationMessages.js"
 
 export const createTilaus = (tilauspvm, hinta, tila = 'vahvistamaton', kayttajaId) => {
-    if (!tilauspvm, !hinta) throw new Error(missingParams);
+    if (!tilauspvm || !hinta) throw new Error(missingParams);
 
     return {
         text: `
