@@ -23,20 +23,10 @@ export const setupDivariRoutes = (backend) => {
     backend.post("/api/divari/oma-tietokanta", async (req, res) => {
         const { nimi, osoite } = req.body;
         try {
-            console.log("Creating divari with oma tietokanta:", nimi, osoite);
-
-            // Add to divari.DivariInfo
             const divariInfoQuery = q.createDivariInfo(nimi, osoite);
-            console.log("Executing query for DivariInfo:", divariInfoQuery.text, divariInfoQuery.values);
-            const divariInfoResult = await pool.query(divariInfoQuery.text, divariInfoQuery.values);
-            console.log("DivariInfo created:", divariInfoResult.rows[0]);
-
-            res.status(201).json({
-                keskusdivari: divariResult.rows[0],
-                divariInfo: divariInfoResult.rows[0],
-            });
+            const result = await pool.query(divariInfoQuery.text, divariInfoQuery.values);
+            res.status(201).json(result.rows[0]);
         } catch (error) {
-            console.error("Error during divari creation:", error);
             res.status(400).json({ error: error.message });
         }
     });

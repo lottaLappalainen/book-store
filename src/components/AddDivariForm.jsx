@@ -1,7 +1,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { processXmlAndAddDivari } from '../actions/divariActions';
+import { addDivariToKeskusdivari, addDivariWithOmaTietokanta, processXmlAndAddDivari } from '../actions/divariActions';
 
 const AddDivariForm = () => {
     const [formData, setFormData] = useState({
@@ -34,6 +34,23 @@ const AddDivariForm = () => {
         const { name, value } = e.target;
         setDivariInfo({ ...divariInfo, [name]: value });
     };
+
+    const handleAddDivari = (e) => {
+        e.preventDefault();
+        if (!formData.nimi || !formData.osoite) {
+            dispatch(setNotification({ message: 'Anna divarin nimi ja osoite!', requestStatus: 'error' }));
+            return;
+        }
+
+        if (formData.omaTietokanta) {
+            dispatch(addDivariWithOmaTietokanta(formData));
+            dispatch(addDivariToKeskusdivari(formData));
+        } else {
+            dispatch(addDivariToKeskusdivari(formData));
+        }
+
+        setFormData({ nimi: '', osoite: '', omaTietokanta: false });
+    }
 
     const handleProcessXML = () => {
         if (!xmlFile) {
@@ -86,7 +103,8 @@ const AddDivariForm = () => {
                     />
                 </div>
                 <button
-                    type="submit"
+                    type="button"
+                    onClick={handleAddDivari}
                     className="w-full bg-blue-500 text-white py-2 rounded mt-2 hover:bg-blue-600"
                 >
                     Lisää divari

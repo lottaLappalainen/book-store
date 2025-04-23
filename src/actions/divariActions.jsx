@@ -39,9 +39,9 @@ export const addDivariWithOmaTietokanta = (divariData) => async (dispatch) => {
         });
         const data = await response.json();
         dispatch({ type: ADD_DIVARI_WITH_OMA_TIETOKANTA, payload: data });
-        dispatch(setNotification({ message: 'Divari lisätty omaan tietokantaan onnistuneesti', requestStatus: 'success' }));
+        dispatch(setNotification({ message: 'Divari omalla kannalla lisätty onnistuneesti', requestStatus: 'success' }));
     } catch (error) {
-        dispatch(setNotification({ message: 'Virhe divarin lisäyksessä omaan tietokantaan', requestStatus: 'error' }));
+        dispatch(setNotification({ message: 'Virhe divarin lisäyksessä omalla tietokannalla', requestStatus: 'error' }));
         console.error('Error adding divari with oma tietokanta:', error);
         dispatch({ type: ADD_DIVARI_WITH_OMA_TIETOKANTA_ERROR, payload: error.message });
     }
