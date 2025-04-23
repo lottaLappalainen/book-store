@@ -13,10 +13,11 @@ const booksReducer = (state = initialState, action) => {
     case FETCH_BOOK:
       return { ...state, selectedBook: action.payload };
 
-    case ADD_BOOK:
     case ADD_TEOS_D1:
+      return state; 
+
     case ADD_TEOS_D2:
-      return { ...state, books: [...state.books, action.payload] };
+      return state; 
 
     case SYNC_DIVARIT:
       return state;

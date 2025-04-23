@@ -16,6 +16,9 @@ const Search = ({role}) => {
   const tyypit = useSelector((state) => state.types.types);
   const luokat = useSelector((state) => state.categories.categories);
 
+  console.log("books", books)
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
