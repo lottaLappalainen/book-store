@@ -1,6 +1,6 @@
 # Book Store
 
-A full-stack book store web application built with React and Express.js, backed by a PostgreSQL database. The frontend uses Redux for state management and Vite for fast development builds. The project was completed for Tampere University sql based project course in 3-person dev team.
+A full-stack book store web application built with React and Express.js, backed by a PostgreSQL database. The frontend uses Redux for state management and Vite for fast development builds. The project was completed for Tampere University sql-database focused project course in 3-person dev team.
 
 ---
 
